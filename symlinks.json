@@ -1,0 +1,10 @@
+[
+  { "source": "copy_remote_db.py", "link": "bin/copy_remote_db" },
+  { "source": "maven-setup.py", "link": "bin/maven-setup" },
+  { 
+  	"source": "fish/functions/add_to_path.fish", 
+  	"link": "functions/add_to_path.fish",
+    "linkRoot": "fish_config"
+  }
+ ]
+
