@@ -8,15 +8,13 @@ function add_to_path --description "append to your PATH"
       case --last
         set __pos last
       case '*'
-        if test -d $path 
-          set -l resolved_path (realpath $path)
-          if test -d $resolved_path
-            if not contains $resolved_path $PATH
-              if [ "$__pos" = "last" ]
-                set --export PATH $PATH $resolved_path
-              else
-                set --export PATH $resolved_path $PATH
-              end
+        set -l resolved_path (realpath $path ^ /dev/null)
+        if test -d $resolved_path
+          if not contains $resolved_path $PATH
+            if [ "$__pos" = "last" ]
+              set --export PATH $PATH $resolved_path
+            else
+              set --export PATH $resolved_path $PATH
             end
           end
         end
