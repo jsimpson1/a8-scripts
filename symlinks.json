@@ -1,10 +1,25 @@
 [
   { "source": "copy_remote_db.py", "link": "bin/copy_remote_db" },
+  
   { "source": "maven-setup.py", "link": "bin/maven-setup" },
+
   { 
   	"source": "fish/functions/add_to_path.fish", 
   	"link": "functions/add_to_path.fish",
     "linkRoot": "fish_config"
-  }
+  },
+
+  { 
+    "source": "fish/conf.d/fish-conf.a8-tools.fish", 
+    "link": "conf.d/fish-conf.a8-tools.fish.fish",
+    "linkRoot": "fish_config"
+  },
+
+  { "source": "a8-versions", "link": "bin/a8-versions" },
+  { "source": "a8-versions.json", "link": "bin/a8-versions.json" },
+
+  { "source": "a8-codegen.py", "link": "bin/a8-codegen" },
+  { "source": "a8-codegen.json", "link": "bin/a8-codegen.json" },
+
  ]
 
