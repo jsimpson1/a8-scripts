@@ -18,7 +18,7 @@
   { "source": "a8-versions", "link": "bin/a8-versions" },
   { "source": "a8-versions.json", "link": "bin/a8-versions.json" },
 
-  { "source": "a8-codegen.py", "link": "bin/a8-codegen" },
+  { "source": "a8-codegen", "link": "bin/a8-codegen" },
   { "source": "a8-codegen.json", "link": "bin/a8-codegen.json" },
 
  ]
