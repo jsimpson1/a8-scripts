@@ -35,6 +35,7 @@ try:
     import tty as python_lib_Tty
 except:
     pass
+from io import StringIO as python_lib_io_StringIO
 from subprocess import Popen as python_lib_subprocess_Popen
 
 
@@ -47,6 +48,7 @@ class Enum:
     _hx_class_name = "Enum"
     __slots__ = ("tag", "index", "params")
     _hx_fields = ["tag", "index", "params"]
+    _hx_methods = ["__str__"]
 
     def __init__(self,tag,index,params):
         # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/EnumImpl.hx:38
@@ -56,6 +58,15 @@ class Enum:
         # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/EnumImpl.hx:40
         self.params = params
 
+    def __str__(self):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/EnumImpl.hx:45
+        if (self.params is None):
+            return self.tag
+        else:
+            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/EnumImpl.hx:48
+            _this = self.params
+            return (((HxOverrides.stringOrNull(self.tag) + "(") + HxOverrides.stringOrNull(",".join([python_Boot.toString1(x1,'') for x1 in _this]))) + ")")
+
 Enum._hx_class = Enum
 
 
@@ -63,6 +74,7 @@ class Date:
     _hx_class_name = "Date"
     __slots__ = ("date",)
     _hx_fields = ["date"]
+    _hx_methods = ["toString"]
     _hx_statics = ["EPOCH_UTC", "now", "fromTime", "UTC", "datetimeTimestamp", "fromString"]
 
     def __init__(self,year,month,day,hour,_hx_min,sec):
@@ -74,6 +86,20 @@ class Date:
             day = 1
         # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Date.hx:36
         self.date = python_lib_datetime_Datetime(year,(month + 1),day,hour,_hx_min,sec,0)
+
+    def toString(self):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Date.hx:83
+        m = ((self.date.month - 1) + 1)
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Date.hx:84
+        d = self.date.day
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Date.hx:85
+        h = self.date.hour
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Date.hx:86
+        mi = self.date.minute
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Date.hx:87
+        s = self.date.second
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Date.hx:88
+        return ((((((((((Std.string(self.date.year) + "-") + HxOverrides.stringOrNull(((("0" + Std.string(m)) if ((m < 10)) else ("" + Std.string(m)))))) + "-") + HxOverrides.stringOrNull(((("0" + Std.string(d)) if ((d < 10)) else ("" + Std.string(d)))))) + " ") + HxOverrides.stringOrNull(((("0" + Std.string(h)) if ((h < 10)) else ("" + Std.string(h)))))) + ":") + HxOverrides.stringOrNull(((("0" + Std.string(mi)) if ((mi < 10)) else ("" + Std.string(mi)))))) + ":") + HxOverrides.stringOrNull(((("0" + Std.string(s)) if ((s < 10)) else ("" + Std.string(s))))))
 
     @staticmethod
     def now():
@@ -148,7 +174,59 @@ EnumValue._hx_class = EnumValue
 class Lambda:
     _hx_class_name = "Lambda"
     __slots__ = ()
-    _hx_statics = ["iter"]
+    _hx_statics = ["array", "map", "flatten", "flatMap", "iter", "find"]
+
+    @staticmethod
+    def array(it):
+        # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:45
+        a = list()
+        # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:46
+        # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:46
+        i = HxOverrides.iterator(it)
+        while i.hasNext():
+            i1 = i.next()
+            # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:47
+            a.append(i1)
+        # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:48
+        return a
+
+    @staticmethod
+    def map(it,f):
+        # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:71
+        l = List()
+        # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:72
+        # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:72
+        x = HxOverrides.iterator(it)
+        while x.hasNext():
+            x1 = x.next()
+            # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:73
+            l.add(f(x1))
+        # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:74
+        return l
+
+    @staticmethod
+    def flatten(it):
+        # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:98
+        l = List()
+        # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:99
+        # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:99
+        e = HxOverrides.iterator(it)
+        while e.hasNext():
+            e1 = e.next()
+            # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:100
+            # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:100
+            x = HxOverrides.iterator(e1)
+            while x.hasNext():
+                x1 = x.next()
+                # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:101
+                l.add(x1)
+        # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:102
+        return l
+
+    @staticmethod
+    def flatMap(it,f):
+        # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:113
+        return Lambda.flatten(Lambda.map(it,f))
 
     @staticmethod
     def iter(it,f):
@@ -158,13 +236,103 @@ class Lambda:
             x1 = x.next()
             # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:174
             f(x1)
+
+    @staticmethod
+    def find(it,f):
+        # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:264
+        # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:264
+        v = HxOverrides.iterator(it)
+        while v.hasNext():
+            v1 = v.next()
+            # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:265
+            if f(v1):
+                return v1
+        # /Users/glen/tools-a8/packages/haxe/current/std/Lambda.hx:267
+        return None
 Lambda._hx_class = Lambda
+
+
+class List:
+    _hx_class_name = "List"
+    __slots__ = ("h", "q", "length")
+    _hx_fields = ["h", "q", "length"]
+    _hx_methods = ["add", "iterator"]
+
+    def __init__(self):
+        # /Users/glen/tools-a8/packages/haxe/current/std/List.hx:33
+        self.q = None
+        # /Users/glen/tools-a8/packages/haxe/current/std/List.hx:32
+        self.h = None
+        # /Users/glen/tools-a8/packages/haxe/current/std/List.hx:44
+        self.length = 0
+
+    def add(self,item):
+        # /Users/glen/tools-a8/packages/haxe/current/std/List.hx:53
+        x = _List_ListNode(item,None)
+        # /Users/glen/tools-a8/packages/haxe/current/std/List.hx:54
+        if (self.h is None):
+            self.h = x
+        else:
+            self.q.next = x
+        # /Users/glen/tools-a8/packages/haxe/current/std/List.hx:58
+        self.q = x
+        # /Users/glen/tools-a8/packages/haxe/current/std/List.hx:59
+        # /Users/glen/tools-a8/packages/haxe/current/std/List.hx:59
+        _hx_local_0 = self
+        _hx_local_1 = _hx_local_0.length
+        _hx_local_0.length = (_hx_local_1 + 1)
+        _hx_local_1
+
+    def iterator(self):
+        # /Users/glen/tools-a8/packages/haxe/current/std/List.hx:161
+        return _List_ListIterator(self.h)
+
+List._hx_class = List
+
+
+class _List_ListNode:
+    _hx_class_name = "_List.ListNode"
+    __slots__ = ("item", "next")
+    _hx_fields = ["item", "next"]
+
+    def __init__(self,item,next):
+        # /Users/glen/tools-a8/packages/haxe/current/std/List.hx:256
+        self.item = item
+        # /Users/glen/tools-a8/packages/haxe/current/std/List.hx:257
+        self.next = next
+
+_List_ListNode._hx_class = _List_ListNode
+
+
+class _List_ListIterator:
+    _hx_class_name = "_List.ListIterator"
+    __slots__ = ("head",)
+    _hx_fields = ["head"]
+    _hx_methods = ["hasNext", "next"]
+
+    def __init__(self,head):
+        # /Users/glen/tools-a8/packages/haxe/current/std/List.hx:269
+        self.head = head
+
+    def hasNext(self):
+        # /Users/glen/tools-a8/packages/haxe/current/std/List.hx:273
+        return (self.head is not None)
+
+    def next(self):
+        # /Users/glen/tools-a8/packages/haxe/current/std/List.hx:277
+        val = self.head.item
+        # /Users/glen/tools-a8/packages/haxe/current/std/List.hx:278
+        self.head = self.head.next
+        # /Users/glen/tools-a8/packages/haxe/current/std/List.hx:279
+        return val
+
+_List_ListIterator._hx_class = _List_ListIterator
 
 
 class Reflect:
     _hx_class_name = "Reflect"
     __slots__ = ()
-    _hx_statics = ["field", "setField"]
+    _hx_statics = ["field", "setField", "isFunction", "copy"]
 
     @staticmethod
     def field(o,field):
@@ -175,6 +343,32 @@ class Reflect:
     def setField(o,field,value):
         # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Reflect.hx:49
         setattr(o,(("_hx_" + field) if ((field in python_Boot.keywords)) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field)),value)
+
+    @staticmethod
+    def isFunction(f):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Reflect.hx:86
+        if (not ((python_lib_Inspect.isfunction(f) or python_lib_Inspect.ismethod(f)))):
+            return hasattr(f,"func_code")
+        else:
+            return True
+
+    @staticmethod
+    def copy(o):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Reflect.hx:124
+        o2 = _hx_AnonObject({})
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Reflect.hx:125
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Reflect.hx:125
+        _g = 0
+        _g1 = python_Boot.fields(o)
+        while (_g < len(_g1)):
+            f = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
+            _g = (_g + 1)
+            # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Reflect.hx:126
+            # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Reflect.hx:126
+            value = Reflect.field(o,f)
+            setattr(o2,(("_hx_" + f) if ((f in python_Boot.keywords)) else (("_hx_" + f) if (((((len(f) > 2) and ((ord(f[0]) == 95))) and ((ord(f[1]) == 95))) and ((ord(f[(len(f) - 1)]) != 95)))) else f)),value)
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Reflect.hx:127
+        return o2
 Reflect._hx_class = Reflect
 
 
@@ -277,6 +471,18 @@ class Std:
             # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Std.hx:210
             return Math.NaN
 Std._hx_class = Std
+
+
+class StringBuf:
+    _hx_class_name = "StringBuf"
+    __slots__ = ("b",)
+    _hx_fields = ["b"]
+
+    def __init__(self):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/StringBuf.hx:32
+        self.b = python_lib_io_StringIO()
+
+StringBuf._hx_class = StringBuf
 
 
 class StringTools:
@@ -689,6 +895,39 @@ ValueType.TUnknown = ValueType("TUnknown", 8, list())
 ValueType._hx_class = ValueType
 
 
+class Type:
+    _hx_class_name = "Type"
+    __slots__ = ()
+    _hx_statics = ["typeof"]
+
+    @staticmethod
+    def typeof(v):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/Type.hx:178
+        if (v is None):
+            return ValueType.TNull
+        elif isinstance(v,bool):
+            return ValueType.TBool
+        elif isinstance(v,int):
+            return ValueType.TInt
+        elif isinstance(v,float):
+            return ValueType.TFloat
+        elif isinstance(v,str):
+            return ValueType.TClass(str)
+        elif isinstance(v,list):
+            return ValueType.TClass(list)
+        elif (isinstance(v,_hx_AnonObject) or python_lib_Inspect.isclass(v)):
+            return ValueType.TObject
+        elif isinstance(v,Enum):
+            return ValueType.TEnum(v.__class__)
+        elif (isinstance(v,type) or hasattr(v,"_hx_class")):
+            return ValueType.TClass(v.__class__)
+        elif callable(v):
+            return ValueType.TFunction
+        else:
+            return ValueType.TUnknown
+Type._hx_class = Type
+
+
 class a8_DateOps:
     _hx_class_name = "a8.DateOps"
     __slots__ = ()
@@ -703,6 +942,39 @@ class a8_DateOps:
         # src/a8/DateOps.hx:9
         return Date.fromTime(((python_lib_Time.mktime(oneSecondBeforeMidnight.date.timetuple()) * 1000) + 1000))
 a8_DateOps._hx_class = a8_DateOps
+
+
+class a8_Exception:
+    _hx_class_name = "a8.Exception"
+    __slots__ = ("message", "causedBy", "callStack", "posInfos")
+    _hx_fields = ["message", "causedBy", "callStack", "posInfos"]
+    _hx_methods = ["toString", "rethrow"]
+    _hx_statics = ["thro"]
+
+    def __init__(self,message,causedBy = None,posInfos = None):
+        # src/a8/Exception.hx:19
+        self.message = message
+        # src/a8/Exception.hx:20
+        self.causedBy = a8_OptionOps.toOption(causedBy)
+        # src/a8/Exception.hx:21
+        self.callStack = haxe_CallStack.callStack()
+        # src/a8/Exception.hx:22
+        self.posInfos = posInfos
+
+    def toString(self):
+        # src/a8/Exception.hx:26
+        return ((((((HxOverrides.stringOrNull(self.posInfos.fileName) + ":") + Std.string(self.posInfos.lineNumber)) + " ") + HxOverrides.stringOrNull(self.message)) + "\n") + HxOverrides.stringOrNull(a8_HaxeOps2.asString(self.callStack,"    ")))
+
+    def rethrow(self,context,posInfos = None):
+        # src/a8/Exception.hx:35
+        raise _HxException(a8_Exception(context,self,posInfos))
+
+    @staticmethod
+    def thro(message):
+        # src/a8/Exception.hx:10
+        raise _HxException(a8_Exception(message,None,_hx_AnonObject({'fileName': "Exception.hx", 'lineNumber': 10, 'className': "a8.Exception", 'methodName': "thro"})))
+
+a8_Exception._hx_class = a8_Exception
 
 
 class a8_Exec:
@@ -738,25 +1010,29 @@ class a8_Exec:
 
     def execInline(self):
         # src/a8/Exec.hx:31
+        a8_Logger.trace(("running -- " + HxOverrides.stringOrNull(self.asCommandLine())),_hx_AnonObject({'fileName': "Exec.hx", 'lineNumber': 31, 'className': "a8.Exec", 'methodName': "execInline"}))
+        # src/a8/Exec.hx:32
         exitCode = python_lib_Subprocess.call(self.args,**python__KwArgs_KwArgs_Impl_.fromT(_hx_AnonObject({'cwd': a8_OptionOps.getOrElse(self.cwd,None)})))
-        # src/a8/Exec.hx:38
+        # src/a8/Exec.hx:39
         if ((exitCode != 0) and self.failOnNonZeroExitCode):
-            raise _HxException("non-zero exit code of ${exitCode} while executing -- ${asCommandLine}")
-        # src/a8/Exec.hx:41
+            a8_Exception.thro(((("non-zero exit code of " + Std.string(exitCode)) + " while executing -- ") + HxOverrides.stringOrNull(self.asCommandLine())))
+        # src/a8/Exec.hx:42
         return exitCode
 
     def execCapture(self):
-        # src/a8/Exec.hx:51
+        # src/a8/Exec.hx:49
+        a8_Logger.trace(("running -- " + HxOverrides.stringOrNull(self.asCommandLine())),_hx_AnonObject({'fileName': "Exec.hx", 'lineNumber': 49, 'className': "a8.Exec", 'methodName': "execCapture"}))
+        # src/a8/Exec.hx:52
         popen = self.args
-        # src/a8/Exec.hx:53
+        # src/a8/Exec.hx:54
         popen1 = a8_OptionOps.getOrElse(self.executable,(self.args[0] if 0 < len(self.args) else None))
-        # src/a8/Exec.hx:55
-        popen2 = python_lib_Subprocess.PIPE
         # src/a8/Exec.hx:56
+        popen2 = python_lib_Subprocess.PIPE
+        # src/a8/Exec.hx:57
         popen3 = python_lib_Subprocess.PIPE
-        # src/a8/Exec.hx:60
-        popen4 = a8_OptionOps.getOrElse(self.cwd,None)
         # src/a8/Exec.hx:61
+        popen4 = a8_OptionOps.getOrElse(self.cwd,None)
+        # src/a8/Exec.hx:62
         o = self.env
         popen5 = None
         if (o.index == 0):
@@ -764,36 +1040,36 @@ class a8_Exec:
             popen5 = haxe_ds_Option.Some(a8_PyOps.toDict(v))
         else:
             popen5 = haxe_ds_Option._hx_None
-        # src/a8/Exec.hx:49
+        # src/a8/Exec.hx:50
         popen6 = python_lib_subprocess_Popen(popen,None,popen1,None,popen2,popen3,None,False,False,popen4,a8_OptionOps.getOrElse(popen5,None))
-        # src/a8/Exec.hx:64
+        # src/a8/Exec.hx:65
         def _hx_local_0(out):
             pass
         firstIO = _hx_local_0
-        # src/a8/Exec.hx:67
+        # src/a8/Exec.hx:68
         timestampStr = a8_PathOps.timestampStr()
-        # src/a8/Exec.hx:69
-        stdoutCapture = haxe_io_BytesOutput()
         # src/a8/Exec.hx:70
+        stdoutCapture = haxe_io_BytesOutput()
+        # src/a8/Exec.hx:71
         stderrCapture = haxe_io_BytesOutput()
-        # src/a8/Exec.hx:72
-        pipedStdout = a8_Pipe(a8_StreamOps.asInputStream(popen6.stdout),a8_StreamOps2.asOutputStream(stdoutCapture),firstIO)
         # src/a8/Exec.hx:73
+        pipedStdout = a8_Pipe(a8_StreamOps.asInputStream(popen6.stdout),a8_StreamOps2.asOutputStream(stdoutCapture),firstIO)
+        # src/a8/Exec.hx:74
         pipedStderr = a8_Pipe(a8_StreamOps.asInputStream(popen6.stderr),a8_StreamOps2.asOutputStream(stderrCapture),firstIO)
-        # src/a8/Exec.hx:75
-        pipedStdout.run()
         # src/a8/Exec.hx:76
+        pipedStdout.run()
+        # src/a8/Exec.hx:77
         pipedStderr.run()
-        # src/a8/Exec.hx:78
+        # src/a8/Exec.hx:79
         popen6.wait()
-        # src/a8/Exec.hx:80
+        # src/a8/Exec.hx:81
         result = _hx_AnonObject({'exitCode': popen6.returncode, 'stderr': a8_HaxeOps.asString(stderrCapture.getBytes()), 'stdout': a8_HaxeOps.asString(stdoutCapture.getBytes())})
-        # src/a8/Exec.hx:87
-        print(str(("" + Std.string(result.exitCode))))
         # src/a8/Exec.hx:88
+        a8_Logger.trace(("" + Std.string(result.exitCode)),_hx_AnonObject({'fileName': "Exec.hx", 'lineNumber': 88, 'className': "a8.Exec", 'methodName': "execCapture"}))
+        # src/a8/Exec.hx:89
         if ((result.exitCode != 0) and self.failOnNonZeroExitCode):
-            raise _HxException(result)
-        # src/a8/Exec.hx:92
+            a8_Exception.thro(((("non-zero exit code of " + Std.string(result.exitCode)) + " while executing -- ") + HxOverrides.stringOrNull(self.asCommandLine())))
+        # src/a8/Exec.hx:93
         return result
 
 a8_Exec._hx_class = a8_Exec
@@ -806,27 +1082,27 @@ class a8_PyOps:
 
     @staticmethod
     def toDict(_hx_map):
-        # src/a8/PyOps.hx:51
+        # src/a8/PyOps.hx:53
         _hx_dict = dict()
-        # src/a8/PyOps.hx:52
-        # src/a8/PyOps.hx:52
+        # src/a8/PyOps.hx:54
+        # src/a8/PyOps.hx:54
         k = _hx_map.keys()
         while k.hasNext():
             k1 = k.next()
-            # src/a8/PyOps.hx:53
+            # src/a8/PyOps.hx:55
             _hx_dict[k1] = _hx_map.get(k1)
-        # src/a8/PyOps.hx:55
+        # src/a8/PyOps.hx:57
         return _hx_dict
 
     @staticmethod
     def spawn(fn):
-        # src/a8/PyOps.hx:60
-        th = python_lib_threading_Thread(**python__KwArgs_KwArgs_Impl_.fromT(_hx_AnonObject({'target': fn})))
-        # src/a8/PyOps.hx:61
-        th.daemon = True
         # src/a8/PyOps.hx:62
-        th.start()
+        th = python_lib_threading_Thread(**python__KwArgs_KwArgs_Impl_.fromT(_hx_AnonObject({'target': fn})))
+        # src/a8/PyOps.hx:63
+        th.daemon = True
         # src/a8/PyOps.hx:64
+        th.start()
+        # src/a8/PyOps.hx:66
         return th
 a8_PyOps._hx_class = a8_PyOps
 
@@ -915,25 +1191,101 @@ a8_GlobalScheduler._hx_class = a8_GlobalScheduler
 class a8_HaxeOps:
     _hx_class_name = "a8.HaxeOps"
     __slots__ = ()
-    _hx_statics = ["asString"]
+    _hx_statics = ["asString", "toMap"]
 
     @staticmethod
     def asString(_hx_bytes):
-        # src/a8/HaxeOps.hx:9
+        # src/a8/HaxeOps.hx:12
         return _hx_bytes.getString(0,_hx_bytes.length)
+
+    @staticmethod
+    def toMap(iterable,keyFn):
+        # src/a8/HaxeOps.hx:16
+        _hx_map = haxe_ds_StringMap()
+        # src/a8/HaxeOps.hx:17
+        def _hx_local_0(a):
+            # src/a8/HaxeOps.hx:17
+            key = keyFn(a)
+            _hx_map.h[key] = a
+        Lambda.iter(iterable,_hx_local_0)
+        # src/a8/HaxeOps.hx:18
+        return _hx_map
 a8_HaxeOps._hx_class = a8_HaxeOps
+
+
+class a8_HaxeOps2:
+    _hx_class_name = "a8.HaxeOps2"
+    __slots__ = ()
+    _hx_statics = ["asString", "toMap"]
+
+    @staticmethod
+    def asString(stack,indent = None):
+        # src/a8/HaxeOps.hx:29
+        if (indent is None):
+            indent = ""
+        # src/a8/HaxeOps.hx:33
+        def _hx_local_0(si):
+            # src/a8/HaxeOps.hx:33
+            _this1 = Std.string(si)
+            return (("null" if indent is None else indent) + ("null" if _this1 is None else _this1))
+        # src/a8/HaxeOps.hx:32
+        _this = list(map(_hx_local_0,stack))
+        s = "\n".join([python_Boot.toString1(x1,'') for x1 in _this])
+        # src/a8/HaxeOps.hx:35
+        return s
+
+    @staticmethod
+    def toMap(iterable):
+        # src/a8/HaxeOps.hx:39
+        _hx_map = haxe_ds_StringMap()
+        # src/a8/HaxeOps.hx:40
+        # src/a8/HaxeOps.hx:40
+        t = HxOverrides.iterator(iterable)
+        while t.hasNext():
+            t1 = t.next()
+            # src/a8/HaxeOps.hx:41
+            _hx_map.h[python_internal_ArrayImpl._get(t1, 0)] = python_internal_ArrayImpl._get(t1, 1)
+        # src/a8/HaxeOps.hx:43
+        return _hx_map
+a8_HaxeOps2._hx_class = a8_HaxeOps2
+
+
+class a8_Logger:
+    _hx_class_name = "a8.Logger"
+    __slots__ = ()
+    _hx_statics = ["traceEnabled", "trace", "warn"]
+
+    @staticmethod
+    def trace(msg,posInfo = None):
+        # src/a8/Logger.hx:12
+        if a8_Logger.traceEnabled:
+            haxe_Log.trace(("TRACE - " + ("null" if msg is None else msg)),posInfo)
+
+    @staticmethod
+    def warn(msg,posInfo = None):
+        # src/a8/Logger.hx:18
+        haxe_Log.trace(("WARN - " + ("null" if msg is None else msg)),posInfo)
+a8_Logger._hx_class = a8_Logger
 
 
 class a8_OptionOps:
     _hx_class_name = "a8.OptionOps"
     __slots__ = ()
-    _hx_statics = ["nonEmpty", "isEmpty", "getOrError", "getOrElse", "getOrElseFn", "get", "iter"]
+    _hx_statics = ["toOption", "nonEmpty", "isEmpty", "getOrError", "getOrElse", "getOrElseFn", "get", "iter"]
+
+    @staticmethod
+    def toOption(a):
+        # src/a8/OptionOps.hx:14
+        if (a is None):
+            return haxe_ds_Option._hx_None
+        else:
+            return haxe_ds_Option.Some(a)
 
     @staticmethod
     def nonEmpty(o):
-        # src/a8/OptionOps.hx:14
+        # src/a8/OptionOps.hx:20
         o1 = o.index
-        # src/a8/OptionOps.hx:15
+        # src/a8/OptionOps.hx:21
         if (o1 == 0):
             return True
         elif (o1 == 1):
@@ -943,30 +1295,30 @@ class a8_OptionOps:
 
     @staticmethod
     def isEmpty(o):
-        # src/a8/OptionOps.hx:21
+        # src/a8/OptionOps.hx:27
         return (not a8_OptionOps.nonEmpty(o))
 
     @staticmethod
     def getOrError(o,msg):
-        # src/a8/OptionOps.hx:27
+        # src/a8/OptionOps.hx:33
         o1 = o.index
-        # src/a8/OptionOps.hx:28
+        # src/a8/OptionOps.hx:34
         if (o1 == 0):
-            # src/a8/OptionOps.hx:28
+            # src/a8/OptionOps.hx:34
             i = o.params[0]
             return i
         elif (o1 == 1):
-            raise _HxException(msg)
+            raise _HxException(a8_Exception(msg,None,_hx_AnonObject({'fileName': "OptionOps.hx", 'lineNumber': 35, 'className': "a8.OptionOps", 'methodName': "getOrError"})))
         else:
             pass
 
     @staticmethod
     def getOrElse(o,_hx_def):
-        # src/a8/OptionOps.hx:35
+        # src/a8/OptionOps.hx:41
         o1 = o.index
-        # src/a8/OptionOps.hx:36
+        # src/a8/OptionOps.hx:42
         if (o1 == 0):
-            # src/a8/OptionOps.hx:36
+            # src/a8/OptionOps.hx:42
             i = o.params[0]
             return i
         elif (o1 == 1):
@@ -976,11 +1328,11 @@ class a8_OptionOps:
 
     @staticmethod
     def getOrElseFn(o,_hx_def):
-        # src/a8/OptionOps.hx:43
+        # src/a8/OptionOps.hx:49
         o1 = o.index
-        # src/a8/OptionOps.hx:44
+        # src/a8/OptionOps.hx:50
         if (o1 == 0):
-            # src/a8/OptionOps.hx:44
+            # src/a8/OptionOps.hx:50
             i = o.params[0]
             return i
         elif (o1 == 1):
@@ -989,24 +1341,24 @@ class a8_OptionOps:
             pass
 
     @staticmethod
-    def get(o,_hx_def):
-        # src/a8/OptionOps.hx:50
+    def get(o):
+        # src/a8/OptionOps.hx:56
         return a8_OptionOps.getOrError(o,"expected a Some")
 
     @staticmethod
     def iter(o,fn):
-        # src/a8/OptionOps.hx:55
+        # src/a8/OptionOps.hx:61
         o1 = o.index
-        # src/a8/OptionOps.hx:56
+        # src/a8/OptionOps.hx:62
         if (o1 == 0):
-            # src/a8/OptionOps.hx:56
+            # src/a8/OptionOps.hx:62
             a = o.params[0]
             fn(a)
         elif (o1 == 1):
             pass
         else:
             pass
-        # src/a8/OptionOps.hx:54
+        # src/a8/OptionOps.hx:60
         return
 a8_OptionOps._hx_class = a8_OptionOps
 
@@ -1014,109 +1366,156 @@ a8_OptionOps._hx_class = a8_OptionOps
 class a8_PathOps:
     _hx_class_name = "a8.PathOps"
     __slots__ = ()
-    _hx_statics = ["timestampStr", "path", "executablePath", "userHome", "programPath", "readText", "makeDirectories", "readBytes", "exists", "isAbsolute", "files", "basename", "moveTo", "deleteFile", "entries", "isFile", "isDir", "realPathStr", "writeBytes", "writeText", "parent", "entry", "outputStream"]
+    _hx_statics = ["timestampStr", "path", "symlinkChain", "executablePath", "userHome", "absPath", "name", "programPath", "readText", "readLines", "makeDirectories", "readBytes", "exists", "isAbsolute", "files", "basename", "moveTo", "deleteFile", "entries", "isFile", "isDir", "realPathStr", "writeBytes", "writeText", "parent", "entry", "outputStream", "readProperties"]
 
     @staticmethod
     def timestampStr():
-        # src/a8/PathOps.hx:13
-        now = Date.now()
-        # src/a8/PathOps.hx:15
-        def _hx_local_0(i):
-            # src/a8/PathOps.hx:15
-            return StringTools.lpad(("" + Std.string(i)),"0",2)
         # src/a8/PathOps.hx:14
+        now = Date.now()
+        # src/a8/PathOps.hx:16
+        def _hx_local_0(i):
+            # src/a8/PathOps.hx:16
+            return StringTools.lpad(("" + Std.string(i)),"0",2)
+        # src/a8/PathOps.hx:15
         pad = _hx_local_0
-        # src/a8/PathOps.hx:17
+        # src/a8/PathOps.hx:18
         return ((((((Std.string(now.date.year) + HxOverrides.stringOrNull(pad((now.date.month - 1)))) + HxOverrides.stringOrNull(pad(now.date.day))) + "_") + HxOverrides.stringOrNull(pad(now.date.hour))) + HxOverrides.stringOrNull(pad(now.date.minute))) + HxOverrides.stringOrNull(pad(now.date.second)))
 
     @staticmethod
     def path(p):
-        # src/a8/PathOps.hx:21
+        # src/a8/PathOps.hx:22
         return haxe_io_Path(p)
 
     @staticmethod
+    def symlinkChain(p):
+        # src/a8/PathOps.hx:26
+        paths = []
+        # src/a8/PathOps.hx:27
+        impl = None
+        def _hx_local_0(thePath):
+            # src/a8/PathOps.hx:28
+            # src/a8/PathOps.hx:28
+            x = a8_PathOps.absPath(thePath)
+            paths.append(x)
+            # src/a8/PathOps.hx:29
+            if python_lib_os_Path.islink(thePath.toString()):
+                # src/a8/PathOps.hx:30
+                relativeLink = a8_PyOs2.readlink(thePath.toString())
+                # src/a8/PathOps.hx:31
+                absoluteLink = (relativeLink if (python_lib_os_Path.isabs(relativeLink)) else python_lib_os_Path.join(a8_PathOps.parent(thePath).toString(),relativeLink))
+                # src/a8/PathOps.hx:36
+                p1 = a8_PathOps.path(absoluteLink)
+                # src/a8/PathOps.hx:37
+                impl(p1)
+        impl = _hx_local_0
+        impl1 = impl
+        # src/a8/PathOps.hx:40
+        impl1(p)
+        # src/a8/PathOps.hx:41
+        return paths
+
+    @staticmethod
     def executablePath():
-        # src/a8/PathOps.hx:29
+        # src/a8/PathOps.hx:49
         return a8_PlatformOps.instance.executablePath()
 
     @staticmethod
     def userHome():
-        # src/a8/PathOps.hx:33
+        # src/a8/PathOps.hx:53
         return haxe_io_Path(Sys.environment().h.get("HOME",None))
 
     @staticmethod
+    def absPath(p):
+        # src/a8/PathOps.hx:57
+        return a8_PlatformOps.instance.absPath(p)
+
+    @staticmethod
+    def name(p):
+        # src/a8/PathOps.hx:62
+        if (p.ext is None):
+            return p.file
+        else:
+            return ((HxOverrides.stringOrNull(p.file) + ".") + HxOverrides.stringOrNull(p.ext))
+
+    @staticmethod
     def programPath():
-        # src/a8/PathOps.hx:41
+        # src/a8/PathOps.hx:74
         return haxe_io_Path(Sys.programPath())
 
     @staticmethod
     def readText(path):
-        # src/a8/PathOps.hx:45
+        # src/a8/PathOps.hx:78
         return sys_io_File.getContent(path.toString())
 
     @staticmethod
+    def readLines(path):
+        # src/a8/PathOps.hx:82
+        _this = a8_PathOps.readText(path)
+        return _this.split("\n")
+
+    @staticmethod
     def makeDirectories(path):
-        # src/a8/PathOps.hx:49
+        # src/a8/PathOps.hx:86
         sys_FileSystem.createDirectory(path.toString())
 
     @staticmethod
     def readBytes(path):
-        # src/a8/PathOps.hx:53
+        # src/a8/PathOps.hx:90
         return sys_io_File.getBytes(path.toString())
 
     @staticmethod
     def exists(path):
-        # src/a8/PathOps.hx:57
+        # src/a8/PathOps.hx:94
         return sys_FileSystem.exists(path.toString())
 
     @staticmethod
     def isAbsolute(path):
-        # src/a8/PathOps.hx:61
+        # src/a8/PathOps.hx:98
         return haxe_io_Path.isAbsolute(path.toString())
 
     @staticmethod
     def files(parentDir):
-        # src/a8/PathOps.hx:66
+        # src/a8/PathOps.hx:103
         def _hx_local_1():
-            # src/a8/PathOps.hx:68
+            # src/a8/PathOps.hx:105
             def _hx_local_0(e):
-                # src/a8/PathOps.hx:68
+                # src/a8/PathOps.hx:105
                 return a8_PathOps.isFile(e)
-            # src/a8/PathOps.hx:66
+            # src/a8/PathOps.hx:103
             return list(filter(_hx_local_0,a8_PathOps.entries(parentDir)))
         return _hx_local_1()
 
     @staticmethod
     def basename(path):
-        # src/a8/PathOps.hx:76
+        # src/a8/PathOps.hx:113
         suffix = ("" if ((path.ext is None)) else ("." + HxOverrides.stringOrNull(path.ext)))
-        # src/a8/PathOps.hx:77
+        # src/a8/PathOps.hx:114
         return (HxOverrides.stringOrNull(path.file) + ("null" if suffix is None else suffix))
 
     @staticmethod
     def moveTo(source,target):
-        # src/a8/PathOps.hx:81
+        # src/a8/PathOps.hx:118
         a8_PlatformOps.instance.moveTo(source,target)
 
     @staticmethod
     def deleteFile(source):
-        # src/a8/PathOps.hx:85
+        # src/a8/PathOps.hx:122
         if a8_PathOps.exists(source):
             sys_FileSystem.deleteFile(source.toString())
 
     @staticmethod
     def entries(parentDir):
-        # src/a8/PathOps.hx:91
+        # src/a8/PathOps.hx:128
         sep = ("" if (parentDir.backslash) else "/")
-        # src/a8/PathOps.hx:93
+        # src/a8/PathOps.hx:130
         if a8_PathOps.exists(parentDir):
-            # src/a8/PathOps.hx:94
+            # src/a8/PathOps.hx:131
             def _hx_local_1():
-                # src/a8/PathOps.hx:97
+                # src/a8/PathOps.hx:134
                 def _hx_local_0(e):
-                    # src/a8/PathOps.hx:97
+                    # src/a8/PathOps.hx:134
                     return haxe_io_Path(((HxOverrides.stringOrNull(parentDir.toString()) + ("null" if sep is None else sep)) + ("null" if e is None else e)))
-                # src/a8/PathOps.hx:94
+                # src/a8/PathOps.hx:131
                 return list(map(_hx_local_0,sys_FileSystem.readDirectory(a8_PathOps.realPathStr(parentDir))))
             return _hx_local_1()
         else:
@@ -1124,56 +1523,83 @@ class a8_PathOps:
 
     @staticmethod
     def isFile(path):
-        # src/a8/PathOps.hx:104
+        # src/a8/PathOps.hx:141
         return a8_PlatformOps.instance.isFile(path)
 
     @staticmethod
     def isDir(path):
-        # src/a8/PathOps.hx:108
+        # src/a8/PathOps.hx:145
         return sys_FileSystem.isDirectory(path.toString())
 
     @staticmethod
     def realPathStr(path):
-        # src/a8/PathOps.hx:112
+        # src/a8/PathOps.hx:149
         return sys_FileSystem.fullPath(path.toString())
 
     @staticmethod
     def writeBytes(path,_hx_bytes):
-        # src/a8/PathOps.hx:116
+        # src/a8/PathOps.hx:153
         sys_io_File.saveBytes(path.toString(),_hx_bytes)
 
     @staticmethod
     def writeText(path,text):
-        # src/a8/PathOps.hx:120
+        # src/a8/PathOps.hx:157
         sys_io_File.saveContent(path.toString(),text)
 
     @staticmethod
     def parent(path):
-        # src/a8/PathOps.hx:124
+        # src/a8/PathOps.hx:161
         _g = path.dir
-        # src/a8/PathOps.hx:125
+        # src/a8/PathOps.hx:1
         if (_g is None):
             if a8_PathOps.isAbsolute(path):
                 return None
             else:
                 return haxe_io_Path(sys_FileSystem.fullPath("."))
         else:
-            # src/a8/PathOps.hx:131
+            # src/a8/PathOps.hx:168
             d = _g
-            # src/a8/PathOps.hx:132
+            # src/a8/PathOps.hx:169
             return haxe_io_Path(d)
 
     @staticmethod
     def entry(dir,name):
-        # src/a8/PathOps.hx:137
+        # src/a8/PathOps.hx:174
         separator = ("" if (dir.backslash) else "/")
-        # src/a8/PathOps.hx:138
+        # src/a8/PathOps.hx:175
         return haxe_io_Path(((HxOverrides.stringOrNull(dir.toString()) + ("null" if separator is None else separator)) + ("null" if name is None else name)))
 
     @staticmethod
     def outputStream(p):
-        # src/a8/PathOps.hx:142
+        # src/a8/PathOps.hx:179
         return a8_StreamOps.fileOutputStream(a8_PathOps.realPathStr(p))
+
+    @staticmethod
+    def readProperties(p,failOnNotFound = None):
+        # src/a8/PathOps.hx:183
+        rf = a8_OptionOps.getOrElse(a8_OptionOps.toOption(failOnNotFound),False)
+        # src/a8/PathOps.hx:184
+        exists = a8_PathOps.exists(p)
+        # src/a8/PathOps.hx:186
+        if ((not exists) and (not rf)):
+            return haxe_ds_StringMap()
+        else:
+            # src/a8/PathOps.hx:189
+            def _hx_local_1():
+                # src/a8/PathOps.hx:190
+                def _hx_local_0(line):
+                    # src/a8/PathOps.hx:191
+                    a = line.split("=")
+                    # src/a8/PathOps.hx:193
+                    if (len(a) == 2):
+                        # src/a8/PathOps.hx:194
+                        this1 = [(a[0] if 0 < len(a) else None), (a[1] if 1 < len(a) else None)]
+                        return [this1]
+                    else:
+                        return []
+                # src/a8/PathOps.hx:189
+                return a8_HaxeOps2.toMap(Lambda.flatMap(a8_PathOps.readLines(p),_hx_local_0))
+            return _hx_local_1()
 a8_PathOps._hx_class = a8_PathOps
 
 
@@ -1183,23 +1609,23 @@ class a8_AbstractPlatform:
     _hx_methods = ["isFile", "spawn", "moveTo"]
 
     def isFile(self,path):
-        # src/a8/Platform.hx:41
-        e = sys_FileSystem.exists(path.toString())
         # src/a8/Platform.hx:42
-        d = sys_FileSystem.isDirectory(path.toString())
+        e = sys_FileSystem.exists(path.toString())
         # src/a8/Platform.hx:43
+        d = sys_FileSystem.isDirectory(path.toString())
+        # src/a8/Platform.hx:44
         if e:
             return (not d)
         else:
             return False
 
     def spawn(self,threadName,fn):
-        # src/a8/Platform.hx:47
-        raise _HxException("TODO ??? implement me")
+        # src/a8/Platform.hx:48
+        raise _HxException(a8_Exception("TODO ??? implement me",None,_hx_AnonObject({'fileName': "Platform.hx", 'lineNumber': 48, 'className': "a8.AbstractPlatform", 'methodName': "spawn"})))
 
     def moveTo(self,source,target):
-        # src/a8/Platform.hx:51
-        raise _HxException("TODO ??? implement me")
+        # src/a8/Platform.hx:52
+        raise _HxException(a8_Exception("TODO ??? implement me",None,_hx_AnonObject({'fileName': "Platform.hx", 'lineNumber': 52, 'className': "a8.AbstractPlatform", 'methodName': "moveTo"})))
 
 a8_AbstractPlatform._hx_class = a8_AbstractPlatform
 
@@ -1207,7 +1633,7 @@ a8_AbstractPlatform._hx_class = a8_AbstractPlatform
 class a8_Platform:
     _hx_class_name = "a8.Platform"
     __slots__ = ()
-    _hx_methods = ["executablePath", "isFile", "spawn", "moveTo"]
+    _hx_methods = ["executablePath", "isFile", "spawn", "moveTo", "absPath"]
 a8_Platform._hx_class = a8_Platform
 
 
@@ -1215,7 +1641,7 @@ class a8_PythonPlatform(a8_AbstractPlatform):
     _hx_class_name = "a8.PythonPlatform"
     __slots__ = ()
     _hx_fields = []
-    _hx_methods = ["executablePath", "isFile", "spawn", "moveTo"]
+    _hx_methods = ["absPath", "executablePath", "isFile", "spawn", "moveTo"]
     _hx_statics = []
     _hx_super = a8_AbstractPlatform
 
@@ -1223,22 +1649,26 @@ class a8_PythonPlatform(a8_AbstractPlatform):
     def __init__(self):
         pass
 
+    def absPath(self,path):
+        # src/a8/Platform.hx:77
+        return a8_PathOps.path(python_lib_os_Path.normpath(python_lib_os_Path.abspath(path.toString())))
+
     def executablePath(self):
-        # src/a8/Platform.hx:76
+        # src/a8/Platform.hx:81
         return haxe_io_Path(python_internal_ArrayImpl._get(python_lib_Sys.argv, 0))
 
     def isFile(self,path):
-        # src/a8/Platform.hx:80
+        # src/a8/Platform.hx:85
         return python_lib_os_Path.isfile(path.toString())
 
     def spawn(self,threadName,fn):
-        # src/a8/Platform.hx:84
+        # src/a8/Platform.hx:89
         th = python_lib_threading_Thread(**python__KwArgs_KwArgs_Impl_.fromT(_hx_AnonObject({'target': fn})))
-        # src/a8/Platform.hx:85
+        # src/a8/Platform.hx:90
         th.start()
 
     def moveTo(self,source,target):
-        # src/a8/Platform.hx:89
+        # src/a8/Platform.hx:94
         a8_PyShutil2.move(source.toString(),target.toString())
 
 a8_PythonPlatform._hx_class = a8_PythonPlatform
@@ -1506,103 +1936,482 @@ class a8_Pipe:
 a8_Pipe._hx_class = a8_Pipe
 
 
+class a8__Tuple2_Tuple2_Impl_:
+    _hx_class_name = "a8._Tuple2.Tuple2_Impl_"
+    __slots__ = ()
+    _hx_statics = ["_new", "_1", "_2", "toString"]
+
+    @staticmethod
+    def _new(a,b):
+        # src/a8/Tuple2.hx:6
+        this1 = [a, b]
+        return this1
+
+    @staticmethod
+    def _1(this1):
+        # src/a8/Tuple2.hx:11
+        return (this1[0] if 0 < len(this1) else None)
+
+    @staticmethod
+    def _2(this1):
+        # src/a8/Tuple2.hx:15
+        return (this1[1] if 1 < len(this1) else None)
+
+    @staticmethod
+    def toString(this1):
+        # src/a8/Tuple2.hx:19
+        return haxe_format_JsonPrinter.print(this1,None,None)
+a8__Tuple2_Tuple2_Impl_._hx_class = a8__Tuple2_Tuple2_Impl_
+
+class haxe_ds_Option(Enum):
+    __slots__ = ()
+    _hx_class_name = "haxe.ds.Option"
+
+    @staticmethod
+    def Some(v):
+        return haxe_ds_Option("Some", 0, [v])
+haxe_ds_Option._hx_None = haxe_ds_Option("None", 1, list())
+haxe_ds_Option._hx_class = haxe_ds_Option
+
+
+class sys_io_File:
+    _hx_class_name = "sys.io.File"
+    __slots__ = ()
+    _hx_statics = ["getContent", "saveContent", "getBytes", "saveBytes"]
+
+    @staticmethod
+    def getContent(path):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:32
+        f = python_lib_Builtins.open(path,"r",-1,"utf-8",None,"")
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:33
+        content = f.read(-1)
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:34
+        f.close()
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:35
+        return content
+
+    @staticmethod
+    def saveContent(path,content):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:39
+        f = python_lib_Builtins.open(path,"w",-1,"utf-8",None,"")
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:40
+        f.write(content)
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:41
+        f.close()
+
+    @staticmethod
+    def getBytes(path):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:45
+        f = python_lib_Builtins.open(path,"rb",-1)
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:46
+        size = f.read(-1)
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:47
+        b = haxe_io_Bytes.ofData(size)
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:48
+        f.close()
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:49
+        return b
+
+    @staticmethod
+    def saveBytes(path,_hx_bytes):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:53
+        f = python_lib_Builtins.open(path,"wb",-1)
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:54
+        f.write(_hx_bytes.b)
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:55
+        f.close()
+sys_io_File._hx_class = sys_io_File
+
+
+class haxe_io_Path:
+    _hx_class_name = "haxe.io.Path"
+    __slots__ = ("dir", "file", "ext", "backslash")
+    _hx_fields = ["dir", "file", "ext", "backslash"]
+    _hx_methods = ["toString"]
+    _hx_statics = ["isAbsolute"]
+
+    def __init__(self,path):
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:68
+        self.backslash = None
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:63
+        self.ext = None
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:53
+        self.file = None
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:43
+        self.dir = None
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:77
+        path1 = path
+        _hx_local_0 = len(path1)
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:78
+        if (_hx_local_0 == 1):
+            if (path1 == "."):
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:79
+                self.dir = path
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:80
+                self.file = ""
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:81
+                return
+        elif (_hx_local_0 == 2):
+            if (path1 == ".."):
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:79
+                self.dir = path
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:80
+                self.file = ""
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:81
+                return
+        else:
+            pass
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:83
+        c1 = path.rfind("/", 0, len(path))
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:84
+        c2 = path.rfind("\\", 0, len(path))
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:85
+        if (c1 < c2):
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:86
+            self.dir = HxString.substr(path,0,c2)
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:87
+            path = HxString.substr(path,(c2 + 1),None)
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:88
+            self.backslash = True
+        elif (c2 < c1):
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:90
+            self.dir = HxString.substr(path,0,c1)
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:91
+            path = HxString.substr(path,(c1 + 1),None)
+        else:
+            self.dir = None
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:94
+        cp = path.rfind(".", 0, len(path))
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:95
+        if (cp != -1):
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:96
+            self.ext = HxString.substr(path,(cp + 1),None)
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:97
+            self.file = HxString.substr(path,0,cp)
+        else:
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:99
+            self.ext = None
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:100
+            self.file = path
+
+    def toString(self):
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:115
+        return ((HxOverrides.stringOrNull((("" if ((self.dir is None)) else (HxOverrides.stringOrNull(self.dir) + HxOverrides.stringOrNull((("\\" if (self.backslash) else "/"))))))) + HxOverrides.stringOrNull(self.file)) + HxOverrides.stringOrNull((("" if ((self.ext is None)) else ("." + HxOverrides.stringOrNull(self.ext))))))
+
+    @staticmethod
+    def isAbsolute(path):
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:302
+        if StringTools.startsWith(path,"/"):
+            return True
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:303
+        if ((("" if ((1 >= len(path))) else path[1])) == ":"):
+            return True
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:304
+        if StringTools.startsWith(path,"\\\\"):
+            return True
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:305
+        return False
+
+haxe_io_Path._hx_class = haxe_io_Path
+
+
+class HxString:
+    _hx_class_name = "HxString"
+    __slots__ = ()
+    _hx_statics = ["split", "charCodeAt", "charAt", "lastIndexOf", "toUpperCase", "toLowerCase", "indexOf", "toString", "substring", "substr"]
+
+    @staticmethod
+    def split(s,d):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:31
+        if (d == ""):
+            return list(s)
+        else:
+            return s.split(d)
+
+    @staticmethod
+    def charCodeAt(s,index):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:37
+        if ((((s is None) or ((len(s) == 0))) or ((index < 0))) or ((index >= len(s)))):
+            return None
+        else:
+            return ord(s[index])
+
+    @staticmethod
+    def charAt(s,index):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:43
+        if ((index < 0) or ((index >= len(s)))):
+            return ""
+        else:
+            return s[index]
+
+    @staticmethod
+    def lastIndexOf(s,_hx_str,startIndex = None):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:48
+        if (startIndex is None):
+            return s.rfind(_hx_str, 0, len(s))
+        else:
+            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:52
+            i = s.rfind(_hx_str, 0, (startIndex + 1))
+            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:53
+            startLeft = (max(0,((startIndex + 1) - len(_hx_str))) if ((i == -1)) else (i + 1))
+            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:54
+            check = s.find(_hx_str, startLeft, len(s))
+            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:55
+            if ((check > i) and ((check <= startIndex))):
+                return check
+            else:
+                return i
+
+    @staticmethod
+    def toUpperCase(s):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:66
+        return s.upper()
+
+    @staticmethod
+    def toLowerCase(s):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:70
+        return s.lower()
+
+    @staticmethod
+    def indexOf(s,_hx_str,startIndex = None):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:74
+        if (startIndex is None):
+            return s.find(_hx_str)
+        else:
+            return s.find(_hx_str, startIndex)
+
+    @staticmethod
+    def toString(s):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:81
+        return s
+
+    @staticmethod
+    def substring(s,startIndex,endIndex = None):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:97
+        if (startIndex < 0):
+            startIndex = 0
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:98
+        if (endIndex is None):
+            return s[startIndex:]
+        else:
+            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:101
+            if (endIndex < 0):
+                endIndex = 0
+            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:102
+            if (endIndex < startIndex):
+                return s[endIndex:startIndex]
+            else:
+                return s[startIndex:endIndex]
+
+    @staticmethod
+    def substr(s,startIndex,_hx_len = None):
+        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:113
+        if (_hx_len is None):
+            return s[startIndex:]
+        else:
+            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:116
+            if (_hx_len == 0):
+                return ""
+            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:117
+            return s[startIndex:(startIndex + _hx_len)]
+HxString._hx_class = HxString
+
+
+class a8_UserConfig:
+    _hx_class_name = "a8.UserConfig"
+    __slots__ = ()
+    _hx_statics = ["sbtCredentials", "versions"]
+a8_UserConfig._hx_class = a8_UserConfig
+
+
+class a8_launcher_CommandLineProcessor:
+    _hx_class_name = "a8.launcher.CommandLineProcessor"
+    __slots__ = ("lazy_argDefs", "argDefs")
+    _hx_fields = ["lazy_argDefs", "argDefs"]
+    _hx_methods = ["apply", "get_argDefs"]
+
+    def __init__(self):
+        # src/a8/launcher/CommandLineProcessor.hx:9
+        self.argDefs = None
+        self.lazy_argDefs = None
+        def _hx_local_4():
+            def _hx_local_3():
+                # src/a8/launcher/CommandLineProcessor.hx:14
+                def _hx_local_0(config,args):
+                    # src/a8/launcher/CommandLineProcessor.hx:14
+                    Reflect.setField(config,"explicitVersion",args)
+                # src/a8/launcher/CommandLineProcessor.hx:20
+                def _hx_local_1(config1,args1):
+                    # src/a8/launcher/CommandLineProcessor.hx:20
+                    Reflect.setField(config1,"quiet",a8_OptionOps.isEmpty(args1))
+                # src/a8/launcher/CommandLineProcessor.hx:26
+                def _hx_local_2(config2,args2):
+                    # src/a8/launcher/CommandLineProcessor.hx:26
+                    Reflect.setField(config2,"resolveOnly",a8_OptionOps.nonEmpty(args2))
+                # src/a8/launcher/CommandLineProcessor.hx:9
+                return [_hx_AnonObject({'name': "--l-version", 'parmCount': 1, 'apply': _hx_local_0}), _hx_AnonObject({'name': "--l-verbose", 'parmCount': 0, 'apply': _hx_local_1}), _hx_AnonObject({'name': "--l-resolveOnly", 'parmCount': 0, 'apply': _hx_local_2})]
+            return _hx_local_3()
+        self.lazy_argDefs = tink_core__Lazy_LazyFunc(_hx_local_4)
+
+    def apply(self,initialConfig):
+        # src/a8/launcher/CommandLineProcessor.hx:35
+        config = Reflect.copy(initialConfig)
+        # src/a8/launcher/CommandLineProcessor.hx:37
+        newArgs = []
+        # src/a8/launcher/CommandLineProcessor.hx:38
+        Reflect.setField(config,"resolvedCommandLineArgs",newArgs)
+        # src/a8/launcher/CommandLineProcessor.hx:39
+        temp = list(Reflect.field(initialConfig,"rawCommandLineArgs"))
+        # src/a8/launcher/CommandLineProcessor.hx:42
+        temp.reverse()
+        # src/a8/launcher/CommandLineProcessor.hx:43
+        if (len(temp) != 0):
+            temp.pop()
+        # src/a8/launcher/CommandLineProcessor.hx:45
+        while (len(temp) > 0):
+            # src/a8/launcher/CommandLineProcessor.hx:46
+            a = [(None if ((len(temp) == 0)) else temp.pop())]
+            # src/a8/launcher/CommandLineProcessor.hx:47
+            def _hx_local_1(a1):
+                # src/a8/launcher/CommandLineProcessor.hx:47
+                def _hx_local_0(ad):
+                    # src/a8/launcher/CommandLineProcessor.hx:47
+                    return (ad.name == (a1[0] if 0 < len(a1) else None))
+                return _hx_local_0
+            argDef = Lambda.find(self.get_argDefs(),_hx_local_1(a))
+            # src/a8/launcher/CommandLineProcessor.hx:48
+            if (argDef is None):
+                # src/a8/launcher/CommandLineProcessor.hx:49
+                if StringTools.startsWith((a[0] if 0 < len(a) else None),"--l-"):
+                    raise _HxException(a8_Exception(("don't know how to handle arg -- " + HxOverrides.stringOrNull((a[0] if 0 < len(a) else None))),None,_hx_AnonObject({'fileName': "CommandLineProcessor.hx", 'lineNumber': 50, 'className': "a8.launcher.CommandLineProcessor", 'methodName': "apply"})))
+                # src/a8/launcher/CommandLineProcessor.hx:52
+                newArgs.append((a[0] if 0 < len(a) else None))
+            else:
+                # src/a8/launcher/CommandLineProcessor.hx:54
+                parms = None
+                # src/a8/launcher/CommandLineProcessor.hx:55
+                if (argDef.parmCount == 0):
+                    parms = haxe_ds_Option.Some(argDef.name)
+                elif (argDef.parmCount == 1):
+                    parms = haxe_ds_Option.Some((None if ((len(temp) == 0)) else temp.pop()))
+                else:
+                    raise _HxException(a8_Exception("can only handle parmCount of 0 or 1",None,_hx_AnonObject({'fileName': "CommandLineProcessor.hx", 'lineNumber': 57, 'className': "a8.launcher.CommandLineProcessor", 'methodName': "apply"})))
+                # src/a8/launcher/CommandLineProcessor.hx:58
+                argDef.apply(config,parms)
+                # src/a8/launcher/CommandLineProcessor.hx:59
+                Reflect.setField(argDef,"processed",True)
+        # src/a8/launcher/CommandLineProcessor.hx:65
+        def _hx_local_2(ad1):
+            # src/a8/launcher/CommandLineProcessor.hx:65
+            if (not Reflect.field(ad1,"processed")):
+                ad1.apply(config,haxe_ds_Option._hx_None)
+        # src/a8/launcher/CommandLineProcessor.hx:64
+        Lambda.iter(self.get_argDefs(),_hx_local_2)
+        # src/a8/launcher/CommandLineProcessor.hx:72
+        return config
+
+    def get_argDefs(self):
+        # src/a8/launcher/CommandLineProcessor.hx:9
+        return self.lazy_argDefs.get()
+
+a8_launcher_CommandLineProcessor._hx_class = a8_launcher_CommandLineProcessor
+
+
 class a8_launcher_Launcher:
     _hx_class_name = "a8.launcher.Launcher"
-    __slots__ = ("lazy_logArchivesDir", "lazy_logsDir", "lazy_installDir", "lazy_a8VersionsCache", "config", "appName", "args", "a8VersionsCache", "installDir", "logsDir", "logArchivesDir", "pipedStdout", "pipedStderr", "logRollers")
-    _hx_fields = ["lazy_logArchivesDir", "lazy_logsDir", "lazy_installDir", "lazy_a8VersionsCache", "config", "appName", "args", "a8VersionsCache", "installDir", "logsDir", "logArchivesDir", "pipedStdout", "pipedStderr", "logRollers"]
-    _hx_methods = ["logDetail", "logError", "logWarn", "_log", "archiveOldLogs", "archiveLogFiles", "resolveStandardArgs", "resolveJvmCliLaunchArgs", "resolveJvmLaunchArgs", "runAndWait", "initializeLogRollers", "get_a8VersionsCache", "get_installDir", "get_logsDir", "get_logArchivesDir"]
+    __slots__ = ("lazy_logArchivesDir", "lazy_logsDir", "lazy_installDir", "lazy_a8VersionsCache", "config", "appName", "initialArgs", "a8VersionsCache", "installDir", "logsDir", "logArchivesDir", "pipedStdout", "pipedStderr", "logRollers")
+    _hx_fields = ["lazy_logArchivesDir", "lazy_logsDir", "lazy_installDir", "lazy_a8VersionsCache", "config", "appName", "initialArgs", "a8VersionsCache", "installDir", "logsDir", "logArchivesDir", "pipedStdout", "pipedStderr", "logRollers"]
+    _hx_methods = ["logTrace", "logWarn", "_log", "archiveOldLogs", "archiveLogFiles", "resolveStandardArgs", "resolveJvmCliLaunchArgs", "resolveJvmLaunchArgs", "runAndWait", "initializeLogRollers", "get_a8VersionsCache", "get_installDir", "get_logsDir", "get_logArchivesDir"]
     _hx_statics = ["initDirectory"]
 
-    def __init__(self,config,appName,args):
-        # src/a8/launcher/Launcher.hx:36
-        self.logRollers = None
-        # src/a8/launcher/Launcher.hx:35
-        self.pipedStderr = None
+    def __init__(self,config,appName,initialArgs):
         # src/a8/launcher/Launcher.hx:34
+        self.logRollers = None
+        # src/a8/launcher/Launcher.hx:33
+        self.pipedStderr = None
+        # src/a8/launcher/Launcher.hx:32
         self.pipedStdout = None
-        # src/a8/launcher/Launcher.hx:32
+        # src/a8/launcher/Launcher.hx:30
         self.logArchivesDir = None
-        # src/a8/launcher/Launcher.hx:31
+        # src/a8/launcher/Launcher.hx:29
         self.logsDir = None
-        # src/a8/launcher/Launcher.hx:30
+        # src/a8/launcher/Launcher.hx:28
         self.installDir = None
-        # src/a8/launcher/Launcher.hx:27
-        self.a8VersionsCache = None
         # src/a8/launcher/Launcher.hx:25
-        self.args = None
-        # src/a8/launcher/Launcher.hx:23
-        self.appName = None
+        self.a8VersionsCache = None
         # src/a8/launcher/Launcher.hx:22
+        self.initialArgs = None
+        # src/a8/launcher/Launcher.hx:20
+        self.appName = None
+        # src/a8/launcher/Launcher.hx:19
         self.config = None
-        # src/a8/launcher/Launcher.hx:27
+        # src/a8/launcher/Launcher.hx:25
         self.lazy_a8VersionsCache = None
-        # src/a8/launcher/Launcher.hx:30
+        # src/a8/launcher/Launcher.hx:28
         self.lazy_installDir = None
-        # src/a8/launcher/Launcher.hx:31
+        # src/a8/launcher/Launcher.hx:29
         self.lazy_logsDir = None
-        # src/a8/launcher/Launcher.hx:32
+        # src/a8/launcher/Launcher.hx:30
         self.lazy_logArchivesDir = None
         # ?:1
         _gthis = self
-        # src/a8/launcher/Launcher.hx:32
+        # src/a8/launcher/Launcher.hx:30
         def _hx_local_0():
-            # src/a8/launcher/Launcher.hx:32
+            # src/a8/launcher/Launcher.hx:30
             return a8_launcher_Launcher.initDirectory("archives",None,_gthis.get_logsDir(),Reflect.field(_gthis.config,"logFiles"))
         self.lazy_logArchivesDir = tink_core__Lazy_LazyFunc(_hx_local_0)
-        # src/a8/launcher/Launcher.hx:31
+        # src/a8/launcher/Launcher.hx:29
         def _hx_local_1():
-            # src/a8/launcher/Launcher.hx:31
+            # src/a8/launcher/Launcher.hx:29
             return a8_launcher_Launcher.initDirectory(Reflect.field(config,"logsDir"),"logs",_gthis.get_installDir())
         self.lazy_logsDir = tink_core__Lazy_LazyFunc(_hx_local_1)
-        # src/a8/launcher/Launcher.hx:30
+        # src/a8/launcher/Launcher.hx:28
         def _hx_local_2():
-            # src/a8/launcher/Launcher.hx:30
+            # src/a8/launcher/Launcher.hx:28
             return a8_launcher_Launcher.initDirectory(Reflect.field(config,"installDir"),None,a8_PathOps.path(python_lib_Os.getcwd()))
         self.lazy_installDir = tink_core__Lazy_LazyFunc(_hx_local_2)
-        # src/a8/launcher/Launcher.hx:27
+        # src/a8/launcher/Launcher.hx:25
         def _hx_local_3():
-            # src/a8/launcher/Launcher.hx:27
+            # src/a8/launcher/Launcher.hx:25
             return a8_launcher_Launcher.initDirectory(".a8/versions/cache",None,a8_PathOps.userHome())
         self.lazy_a8VersionsCache = tink_core__Lazy_LazyFunc(_hx_local_3)
-        # src/a8/launcher/Launcher.hx:22
+        # src/a8/launcher/Launcher.hx:19
         self.config = config
-        # src/a8/launcher/Launcher.hx:23
+        # src/a8/launcher/Launcher.hx:20
         self.appName = appName
-        # src/a8/launcher/Launcher.hx:25
-        self.args = args
+        # src/a8/launcher/Launcher.hx:22
+        self.initialArgs = initialArgs
 
-    def logDetail(self,msg):
+    def logTrace(self,msg,posInfo = None):
         # src/a8/launcher/Launcher.hx:58
         if (not Reflect.field(self.config,"quiet")):
-            self._log(msg,self.pipedStdout)
+            if (self.pipedStdout is not None):
+                self.pipedStdout.log(("TRACE - " + ("null" if msg is None else msg)))
+            else:
+                a8_Logger.trace(msg,posInfo)
 
-    def logError(self,msg):
-        # src/a8/launcher/Launcher.hx:64
-        self._log(("ERROR - " + ("null" if msg is None else msg)),self.pipedStderr)
-
-    def logWarn(self,msg):
+    def logWarn(self,msg,posInfo = None):
         # src/a8/launcher/Launcher.hx:68
-        self._log(("WARN - " + ("null" if msg is None else msg)),self.pipedStderr)
+        if (self.pipedStderr is not None):
+            self.pipedStderr.log(("WARN - " + ("null" if msg is None else msg)))
+        else:
+            a8_Logger.warn(msg,posInfo)
 
     def _log(self,msg,pipe):
-        # src/a8/launcher/Launcher.hx:72
-        if (pipe is not None):
-            pipe.log(msg)
-        else:
-            print(str(msg))
+        pass
 
     def archiveOldLogs(self):
-        # src/a8/launcher/Launcher.hx:81
+        # src/a8/launcher/Launcher.hx:80
         prefix = (HxOverrides.stringOrNull(self.appName) + ".")
-        # src/a8/launcher/Launcher.hx:82
+        # src/a8/launcher/Launcher.hx:81
         suffix1 = ".details"
-        # src/a8/launcher/Launcher.hx:83
+        # src/a8/launcher/Launcher.hx:82
         suffix2 = ".errors"
-        # src/a8/launcher/Launcher.hx:88
+        # src/a8/launcher/Launcher.hx:87
         def _hx_local_0(f):
-            # src/a8/launcher/Launcher.hx:89
+            # src/a8/launcher/Launcher.hx:88
             filename = a8_PathOps.basename(f)
-            # src/a8/launcher/Launcher.hx:90
+            # src/a8/launcher/Launcher.hx:89
             if StringTools.startsWith(filename,prefix):
                 if (not StringTools.endsWith(filename,suffix1)):
                     return StringTools.endsWith(filename,suffix2)
@@ -1610,310 +2419,329 @@ class a8_launcher_Launcher:
                     return True
             else:
                 return False
-        # src/a8/launcher/Launcher.hx:85
+        # src/a8/launcher/Launcher.hx:84
         filesToArchive = list(filter(_hx_local_0,a8_PathOps.files(self.get_logsDir())))
-        # src/a8/launcher/Launcher.hx:95
+        # src/a8/launcher/Launcher.hx:94
         self.archiveLogFiles(filesToArchive)
 
     def archiveLogFiles(self,files):
-        # src/a8/launcher/Launcher.hx:99
+        # src/a8/launcher/Launcher.hx:98
         _gthis = self
-        # src/a8/launcher/Launcher.hx:103
+        # src/a8/launcher/Launcher.hx:102
         def _hx_local_0(f):
-            # src/a8/launcher/Launcher.hx:104
+            # src/a8/launcher/Launcher.hx:103
             target = a8_PathOps.entry(_gthis.get_logArchivesDir(),a8_PathOps.basename(f))
-            # src/a8/launcher/Launcher.hx:105
+            # src/a8/launcher/Launcher.hx:104
             a8_PathOps.deleteFile(target)
-            # src/a8/launcher/Launcher.hx:106
+            # src/a8/launcher/Launcher.hx:105
             a8_PathOps.moveTo(f,target)
-            # src/a8/launcher/Launcher.hx:107
+            # src/a8/launcher/Launcher.hx:106
             return target
-        # src/a8/launcher/Launcher.hx:101
+        # src/a8/launcher/Launcher.hx:100
         archivedFiles = list(map(_hx_local_0,files))
-        # src/a8/launcher/Launcher.hx:110
-        print(("archiving log files -- " + Std.string(archivedFiles)))
-        # src/a8/launcher/Launcher.hx:113
-        def _hx_local_2():
-            # src/a8/launcher/Launcher.hx:114
-            def _hx_local_1(f1):
-                # src/a8/launcher/Launcher.hx:114
-                python_lib_Subprocess.call(["gzip", "-f", a8_PathOps.realPathStr(f1)])
-            # src/a8/launcher/Launcher.hx:113
-            Lambda.iter(archivedFiles,_hx_local_1)
+        # src/a8/launcher/Launcher.hx:109
+        self.logTrace(("archiving log files -- " + Std.string(archivedFiles)),_hx_AnonObject({'fileName': "Launcher.hx", 'lineNumber': 109, 'className': "a8.launcher.Launcher", 'methodName': "archiveLogFiles"}))
         # src/a8/launcher/Launcher.hx:112
+        def _hx_local_2():
+            # src/a8/launcher/Launcher.hx:113
+            def _hx_local_1(f1):
+                # src/a8/launcher/Launcher.hx:113
+                python_lib_Subprocess.call(["gzip", "-f", a8_PathOps.realPathStr(f1)])
+            # src/a8/launcher/Launcher.hx:112
+            Lambda.iter(archivedFiles,_hx_local_1)
+        # src/a8/launcher/Launcher.hx:111
         gzipFiles = _hx_local_2
-        # src/a8/launcher/Launcher.hx:118
+        # src/a8/launcher/Launcher.hx:117
         a8_PyOps.spawn(gzipFiles)
 
     def resolveStandardArgs(self,stdlauncher):
-        # src/a8/launcher/Launcher.hx:123
+        # src/a8/launcher/Launcher.hx:122
         launchConfig = stdlauncher
-        # src/a8/launcher/Launcher.hx:124
+        # src/a8/launcher/Launcher.hx:123
         return _hx_AnonObject({'kind': "popen", 'args': stdlauncher.args, 'env': None, 'cwd': None, 'executable': None})
 
     def resolveJvmCliLaunchArgs(self,jvmlauncher):
-        # src/a8/launcher/Launcher.hx:134
+        # src/a8/launcher/Launcher.hx:133
         versionFile = None
-        # src/a8/launcher/Launcher.hx:135
-        if (Reflect.field(jvmlauncher,"branch") is not None):
+        # src/a8/launcher/Launcher.hx:134
+        if a8_OptionOps.nonEmpty(Reflect.field(self.config,"explicitVersion")):
+            versionFile = (HxOverrides.stringOrNull(a8_OptionOps.getOrError(Reflect.field(self.config,"explicitVersion"),"")) + ".json")
+        elif (Reflect.field(jvmlauncher,"branch") is not None):
             versionFile = (("latest_" + HxOverrides.stringOrNull(Reflect.field(jvmlauncher,"branch"))) + ".json")
         elif (Reflect.field(jvmlauncher,"version") is not None):
             versionFile = (HxOverrides.stringOrNull(Reflect.field(jvmlauncher,"version")) + ".json")
         else:
-            raise _HxException("must provide a config with branch or version")
-        # src/a8/launcher/Launcher.hx:142
-        inventoryFile = a8_PathOps.entry(self.get_a8VersionsCache(),((((HxOverrides.stringOrNull(jvmlauncher.organization) + "/") + HxOverrides.stringOrNull(jvmlauncher.artifact)) + "/") + ("null" if versionFile is None else versionFile)))
+            raise _HxException(a8_Exception("must provide a config with branch or version",None,_hx_AnonObject({'fileName': "Launcher.hx", 'lineNumber': 141, 'className': "a8.launcher.Launcher", 'methodName': "resolveJvmCliLaunchArgs"})))
         # src/a8/launcher/Launcher.hx:143
-        print(str(inventoryFile.toString()))
+        inventoryFile = a8_PathOps.entry(self.get_a8VersionsCache(),((((HxOverrides.stringOrNull(jvmlauncher.organization) + "/") + HxOverrides.stringOrNull(jvmlauncher.artifact)) + "/") + ("null" if versionFile is None else versionFile)))
         # src/a8/launcher/Launcher.hx:144
-        if (not a8_PathOps.exists(inventoryFile)):
-            # src/a8/launcher/Launcher.hx:145
-            _hx_exec = a8_Exec()
+        a8_Logger.trace(("using inventory file - " + HxOverrides.stringOrNull(inventoryFile.toString())),_hx_AnonObject({'fileName': "Launcher.hx", 'lineNumber': 144, 'className': "a8.launcher.Launcher", 'methodName': "resolveJvmCliLaunchArgs"}))
+        # src/a8/launcher/Launcher.hx:145
+        if ((not a8_PathOps.exists(inventoryFile)) or Reflect.field(self.config,"resolveOnly")):
             # src/a8/launcher/Launcher.hx:146
+            _hx_exec = a8_Exec()
+            # src/a8/launcher/Launcher.hx:149
+            user = a8_UserConfig.sbtCredentials.h.get("user",None)
+            # src/a8/launcher/Launcher.hx:150
+            password = a8_UserConfig.sbtCredentials.h.get("password",None)
+            # src/a8/launcher/Launcher.hx:152
+            version = a8_OptionOps.getOrElse(a8_OptionOps.toOption(a8_UserConfig.versions.h.get("versions_version",None)),"1.0.0-20180425_1229_master")
+            # src/a8/launcher/Launcher.hx:154
+            repoUrl = a8_OptionOps.getOrElse(a8_OptionOps.toOption(a8_UserConfig.versions.h.get("versions_repo_url",None)),(((("https://" + ("null" if user is None else user)) + ":") + ("null" if password is None else password)) + "@accur8.artifactoryonline.com/accur8/all"))
+            # src/a8/launcher/Launcher.hx:156
             def _hx_local_0():
-                # src/a8/launcher/Launcher.hx:146
-                _hx_exec.args = ["a8-versions", "resolve", "--organization", jvmlauncher.organization, "--artifact", jvmlauncher.artifact]
+                # src/a8/launcher/Launcher.hx:156
+                _hx_exec.args = [(Std.string(a8_PathOps.parent(a8_PathOps.programPath())) + "/coursier"), "launch", "--repository", repoUrl, ("a8:a8-versions_2.12:" + ("null" if version is None else version)), "-M", "a8.versions.apps.Main", "--", "resolve", "--organization", jvmlauncher.organization, "--artifact", jvmlauncher.artifact]
                 return _hx_exec.args
             args = _hx_local_0()
-            # src/a8/launcher/Launcher.hx:147
-            if (Reflect.field(jvmlauncher,"branch") is not None):
-                # src/a8/launcher/Launcher.hx:148
-                args.append("--branch")
-                # src/a8/launcher/Launcher.hx:149
-                # src/a8/launcher/Launcher.hx:149
-                x = Reflect.field(jvmlauncher,"branch")
-                args.append(x)
-            elif (Reflect.field(jvmlauncher,"version") is not None):
-                # src/a8/launcher/Launcher.hx:151
+            # src/a8/launcher/Launcher.hx:157
+            if a8_OptionOps.nonEmpty(Reflect.field(self.config,"explicitVersion")):
+                # src/a8/launcher/Launcher.hx:158
                 args.append("--version")
-                # src/a8/launcher/Launcher.hx:152
-                # src/a8/launcher/Launcher.hx:152
-                x1 = Reflect.field(jvmlauncher,"version")
+                # src/a8/launcher/Launcher.hx:159
+                # src/a8/launcher/Launcher.hx:159
+                x = a8_OptionOps.get(Reflect.field(self.config,"explicitVersion"))
+                args.append(x)
+            elif (Reflect.field(jvmlauncher,"branch") is not None):
+                # src/a8/launcher/Launcher.hx:161
+                args.append("--branch")
+                # src/a8/launcher/Launcher.hx:162
+                # src/a8/launcher/Launcher.hx:162
+                x1 = Reflect.field(jvmlauncher,"branch")
                 args.append(x1)
-            # src/a8/launcher/Launcher.hx:154
+            elif (Reflect.field(jvmlauncher,"version") is not None):
+                # src/a8/launcher/Launcher.hx:164
+                args.append("--version")
+                # src/a8/launcher/Launcher.hx:165
+                # src/a8/launcher/Launcher.hx:165
+                x2 = Reflect.field(jvmlauncher,"version")
+                args.append(x2)
+            # src/a8/launcher/Launcher.hx:167
             _hx_exec.execInline()
-        # src/a8/launcher/Launcher.hx:156
+        # src/a8/launcher/Launcher.hx:169
         la = self.resolveJvmLaunchArgs(jvmlauncher,inventoryFile,False)
-        # src/a8/launcher/Launcher.hx:158
+        # src/a8/launcher/Launcher.hx:171
         la.kind = "exec"
-        # src/a8/launcher/Launcher.hx:159
+        # src/a8/launcher/Launcher.hx:172
         la.cwd = None
-        # src/a8/launcher/Launcher.hx:161
+        # src/a8/launcher/Launcher.hx:174
         return la
 
     def resolveJvmLaunchArgs(self,jvmlauncher,installInventoryFile,createAppNameSymlink):
-        # src/a8/launcher/Launcher.hx:167
+        # src/a8/launcher/Launcher.hx:180
         if (not a8_PathOps.exists(installInventoryFile)):
-            raise _HxException(("inventory file does not exist " + HxOverrides.stringOrNull(installInventoryFile.toString())))
-        # src/a8/launcher/Launcher.hx:171
+            raise _HxException(a8_Exception(("inventory file does not exist " + HxOverrides.stringOrNull(installInventoryFile.toString())),None,_hx_AnonObject({'fileName': "Launcher.hx", 'lineNumber': 181, 'className': "a8.launcher.Launcher", 'methodName': "resolveJvmLaunchArgs"})))
+        # src/a8/launcher/Launcher.hx:184
         launchConfig = jvmlauncher
-        # src/a8/launcher/Launcher.hx:173
+        # src/a8/launcher/Launcher.hx:186
         config = python_lib_Json.loads(a8_PathOps.readText(installInventoryFile),**python__KwArgs_KwArgs_Impl_.fromT(_hx_AnonObject({'object_hook': python_Lib.dictToAnon})))
-        # src/a8/launcher/Launcher.hx:175
+        # src/a8/launcher/Launcher.hx:188
         launcherD = jvmlauncher
-        # src/a8/launcher/Launcher.hx:177
+        # src/a8/launcher/Launcher.hx:190
         def _hx_local_0(e):
-            # src/a8/launcher/Launcher.hx:178
+            # src/a8/launcher/Launcher.hx:191
             p = a8_PathOps.realPathStr(e)
-            # src/a8/launcher/Launcher.hx:179
+            # src/a8/launcher/Launcher.hx:192
             if (StringTools.endsWith(p,".jar") or a8_PathOps.isDir(e)):
-                # src/a8/launcher/Launcher.hx:180
+                # src/a8/launcher/Launcher.hx:193
                 _this = config.classpath
                 _this.append(p)
         Lambda.iter(a8_PathOps.entries(a8_PathOps.entry(self.get_installDir(),"lib")),_hx_local_0)
-        # src/a8/launcher/Launcher.hx:183
+        # src/a8/launcher/Launcher.hx:196
         _this1 = config.classpath
         classpath = ":".join([python_Boot.toString1(x1,'') for x1 in _this1])
-        # src/a8/launcher/Launcher.hx:185
+        # src/a8/launcher/Launcher.hx:198
         args = list()
-        # src/a8/launcher/Launcher.hx:187
+        # src/a8/launcher/Launcher.hx:200
         if createAppNameSymlink:
-            # src/a8/launcher/Launcher.hx:188
+            # src/a8/launcher/Launcher.hx:201
             symlinkName = ("j_" + HxOverrides.stringOrNull(self.appName))
-            # src/a8/launcher/Launcher.hx:189
+            # src/a8/launcher/Launcher.hx:202
             symlinkParent = self.get_installDir()
-            # src/a8/launcher/Launcher.hx:190
+            # src/a8/launcher/Launcher.hx:203
             javaAppNameSymLink = ((HxOverrides.stringOrNull(a8_PathOps.realPathStr(symlinkParent)) + "/") + ("null" if symlinkName is None else symlinkName))
-            # src/a8/launcher/Launcher.hx:191
+            # src/a8/launcher/Launcher.hx:204
             javaAppNameSymLinkPath = a8_PathOps.path(javaAppNameSymLink)
-            # src/a8/launcher/Launcher.hx:192
+            # src/a8/launcher/Launcher.hx:205
             cmd = None
-            # src/a8/launcher/Launcher.hx:193
+            # src/a8/launcher/Launcher.hx:206
             if (not a8_PathOps.isFile(javaAppNameSymLinkPath)):
-                # src/a8/launcher/Launcher.hx:194
+                # src/a8/launcher/Launcher.hx:207
                 javaExec = a8_PyShutil2.which("java")
-                # src/a8/launcher/Launcher.hx:195
-                print(str(((("creating symlink " + ("null" if javaExec is None else javaExec)) + " --> ") + ("null" if javaAppNameSymLink is None else javaAppNameSymLink))))
-                # src/a8/launcher/Launcher.hx:196
+                # src/a8/launcher/Launcher.hx:208
+                a8_Logger.trace(((("creating symlink " + ("null" if javaExec is None else javaExec)) + " --> ") + ("null" if javaAppNameSymLink is None else javaAppNameSymLink)),_hx_AnonObject({'fileName': "Launcher.hx", 'lineNumber': 208, 'className': "a8.launcher.Launcher", 'methodName': "resolveJvmLaunchArgs"}))
+                # src/a8/launcher/Launcher.hx:209
                 a8_PyOs2.symlink(javaExec,javaAppNameSymLink)
-                # src/a8/launcher/Launcher.hx:197
+                # src/a8/launcher/Launcher.hx:210
                 if a8_PathOps.isFile(javaAppNameSymLinkPath):
                     cmd = ("./" + ("null" if symlinkName is None else symlinkName))
                 else:
                     cmd = "java"
             else:
                 cmd = ("./" + ("null" if symlinkName is None else symlinkName))
-            # src/a8/launcher/Launcher.hx:205
+            # src/a8/launcher/Launcher.hx:218
             args.append(cmd)
         else:
             args.append("java")
-        # src/a8/launcher/Launcher.hx:210
-        # src/a8/launcher/Launcher.hx:210
+        # src/a8/launcher/Launcher.hx:223
+        # src/a8/launcher/Launcher.hx:223
         x = ("-DappName=" + HxOverrides.stringOrNull(self.appName))
         args.append(x)
-        # src/a8/launcher/Launcher.hx:212
+        # src/a8/launcher/Launcher.hx:225
         if (Reflect.field(launcherD,"jvmArgs") is not None):
-            # src/a8/launcher/Launcher.hx:214
+            # src/a8/launcher/Launcher.hx:227
             def _hx_local_1(jvmArg):
-                # src/a8/launcher/Launcher.hx:214
+                # src/a8/launcher/Launcher.hx:227
                 args.append(jvmArg)
-            # src/a8/launcher/Launcher.hx:213
+            # src/a8/launcher/Launcher.hx:226
             Lambda.iter(Reflect.field(jvmlauncher,"jvmArgs"),_hx_local_1)
-        # src/a8/launcher/Launcher.hx:219
-        # src/a8/launcher/Launcher.hx:219
+        # src/a8/launcher/Launcher.hx:232
+        # src/a8/launcher/Launcher.hx:232
         x1 = jvmlauncher.mainClass
         args.append(x1)
-        # src/a8/launcher/Launcher.hx:221
+        # src/a8/launcher/Launcher.hx:234
         if (Reflect.field(launcherD,"args") is not None):
-            # src/a8/launcher/Launcher.hx:223
+            # src/a8/launcher/Launcher.hx:236
             def _hx_local_2(arg):
-                # src/a8/launcher/Launcher.hx:223
+                # src/a8/launcher/Launcher.hx:236
                 args.append(arg)
-            # src/a8/launcher/Launcher.hx:222
+            # src/a8/launcher/Launcher.hx:235
             Lambda.iter(Reflect.field(jvmlauncher,"args"),_hx_local_2)
-        # src/a8/launcher/Launcher.hx:227
+        # src/a8/launcher/Launcher.hx:240
         def _hx_local_3(arg1):
-            # src/a8/launcher/Launcher.hx:227
+            # src/a8/launcher/Launcher.hx:240
             args.append(arg1)
-        # src/a8/launcher/Launcher.hx:226
-        Lambda.iter(self.args,_hx_local_3)
-        # src/a8/launcher/Launcher.hx:230
-        env = python_lib_Os.environ
-        # src/a8/launcher/Launcher.hx:232
-        newEnv = env.copy()
-        # src/a8/launcher/Launcher.hx:236
-        newEnv["CLASSPATH"] = classpath
-        # src/a8/launcher/Launcher.hx:237
-        newEnv["LAUNCHER_INSTALL_DIR"] = a8_PathOps.realPathStr(self.get_installDir())
-        # src/a8/launcher/Launcher.hx:238
-        newEnv["LAUNCHER_WORKING_DIR"] = python_lib_Os.getcwd()
         # src/a8/launcher/Launcher.hx:239
-        newEnv["LAUNCHER_EXEC_PATH"] = a8_PathOps.realPathStr(a8_PathOps.executablePath())
+        Lambda.iter(Reflect.field(self.config,"resolvedCommandLineArgs"),_hx_local_3)
+        # src/a8/launcher/Launcher.hx:243
+        env = python_lib_Os.environ
         # src/a8/launcher/Launcher.hx:245
+        newEnv = env.copy()
+        # src/a8/launcher/Launcher.hx:249
+        newEnv["CLASSPATH"] = classpath
+        # src/a8/launcher/Launcher.hx:250
+        newEnv["LAUNCHER_INSTALL_DIR"] = a8_PathOps.realPathStr(self.get_installDir())
+        # src/a8/launcher/Launcher.hx:251
+        newEnv["LAUNCHER_WORKING_DIR"] = python_lib_Os.getcwd()
+        # src/a8/launcher/Launcher.hx:252
+        newEnv["LAUNCHER_EXEC_PATH"] = a8_PathOps.realPathStr(a8_PathOps.executablePath())
+        # src/a8/launcher/Launcher.hx:258
         tmp = a8_PathOps.realPathStr(self.get_installDir())
-        # src/a8/launcher/Launcher.hx:241
+        # src/a8/launcher/Launcher.hx:254
         return _hx_AnonObject({'kind': "popen", 'args': args, 'env': newEnv, 'cwd': tmp, 'executable': (args[0] if 0 < len(args) else None)})
 
     def runAndWait(self):
-        # src/a8/launcher/Launcher.hx:254
-        self.logDetail(("installDir = " + Std.string(self.get_installDir())))
-        # src/a8/launcher/Launcher.hx:255
-        self.logDetail(("logsDir = " + Std.string(self.get_logsDir())))
-        # src/a8/launcher/Launcher.hx:256
-        self.logDetail(("logArchivesDir = " + Std.string(self.get_logArchivesDir())))
-        # src/a8/launcher/Launcher.hx:258
-        if Reflect.field(self.config,"logFiles"):
-            self.archiveOldLogs()
-        # src/a8/launcher/Launcher.hx:261
+        # src/a8/launcher/Launcher.hx:267
+        self.logTrace(("installDir = " + Std.string(self.get_installDir())),_hx_AnonObject({'fileName': "Launcher.hx", 'lineNumber': 267, 'className': "a8.launcher.Launcher", 'methodName': "runAndWait"}))
+        # src/a8/launcher/Launcher.hx:268
+        self.logTrace(("logsDir = " + Std.string(self.get_logsDir())),_hx_AnonObject({'fileName': "Launcher.hx", 'lineNumber': 268, 'className': "a8.launcher.Launcher", 'methodName': "runAndWait"}))
+        # src/a8/launcher/Launcher.hx:269
+        self.logTrace(("logArchivesDir = " + Std.string(self.get_logArchivesDir())),_hx_AnonObject({'fileName': "Launcher.hx", 'lineNumber': 269, 'className': "a8.launcher.Launcher", 'methodName': "runAndWait"}))
+        # src/a8/launcher/Launcher.hx:271
         resolvedLaunch = None
-        # src/a8/launcher/Launcher.hx:262
+        # src/a8/launcher/Launcher.hx:272
         if (self.config.kind == "jvm"):
-            # src/a8/launcher/Launcher.hx:263
+            # src/a8/launcher/Launcher.hx:273
             installInventoryFile = a8_PathOps.entry(self.get_installDir(),"install-inventory.json")
-            # src/a8/launcher/Launcher.hx:261
+            # src/a8/launcher/Launcher.hx:271
             resolvedLaunch = self.resolveJvmLaunchArgs(self.config,installInventoryFile,True)
         elif (self.config.kind == "jvm_cli"):
             resolvedLaunch = self.resolveJvmCliLaunchArgs(self.config)
         elif (self.config.kind == "args"):
             resolvedLaunch = self.resolveStandardArgs(self.config)
         else:
-            raise _HxException(("unable to resolve config kind " + HxOverrides.stringOrNull(self.config.kind)))
-        # src/a8/launcher/Launcher.hx:272
-        # src/a8/launcher/Launcher.hx:272
-        _g = resolvedLaunch.kind
-        _g1 = _g
-        _hx_local_0 = len(_g1)
-        # src/a8/launcher/Launcher.hx:273
-        if (_hx_local_0 == 4):
-            if (_g1 == "exec"):
-                # src/a8/launcher/Launcher.hx:276
-                if (resolvedLaunch.cwd is not None):
-                    python_lib_Os.chdir(resolvedLaunch.cwd)
-                # src/a8/launcher/Launcher.hx:278
-                a8_PyOs2.execvpe(resolvedLaunch.executable,resolvedLaunch.args,resolvedLaunch.env)
+            raise _HxException(a8_Exception(("unable to resolve config kind " + HxOverrides.stringOrNull(self.config.kind)),None,_hx_AnonObject({'fileName': "Launcher.hx", 'lineNumber': 280, 'className': "a8.launcher.Launcher", 'methodName': "runAndWait"})))
+        # src/a8/launcher/Launcher.hx:282
+        if (not Reflect.field(self.config,"resolveOnly")):
+            # src/a8/launcher/Launcher.hx:284
+            if Reflect.field(self.config,"logFiles"):
+                self.archiveOldLogs()
+            # src/a8/launcher/Launcher.hx:288
+            # src/a8/launcher/Launcher.hx:288
+            _g = resolvedLaunch.kind
+            _g1 = _g
+            _hx_local_0 = len(_g1)
+            # src/a8/launcher/Launcher.hx:289
+            if (_hx_local_0 == 4):
+                if (_g1 == "exec"):
+                    # src/a8/launcher/Launcher.hx:292
+                    if (resolvedLaunch.cwd is not None):
+                        python_lib_Os.chdir(resolvedLaunch.cwd)
+                    # src/a8/launcher/Launcher.hx:294
+                    a8_PyOs2.execvpe(resolvedLaunch.executable,resolvedLaunch.args,resolvedLaunch.env)
+                else:
+                    raise _HxException(a8_Exception("don't know how to handle ResolvedLaunch.kind = ${resolvedLaunch.kind}",None,_hx_AnonObject({'fileName': "Launcher.hx", 'lineNumber': 327, 'className': "a8.launcher.Launcher", 'methodName': "runAndWait"})))
+            elif (_hx_local_0 == 5):
+                if (_g1 == "popen"):
+                    # src/a8/launcher/Launcher.hx:297
+                    self.logTrace(("running -- " + Std.string(resolvedLaunch.args)),_hx_AnonObject({'fileName': "Launcher.hx", 'lineNumber': 297, 'className': "a8.launcher.Launcher", 'methodName': "runAndWait"}))
+                    # src/a8/launcher/Launcher.hx:299
+                    popen = python_lib_subprocess_Popen(resolvedLaunch.args,None,resolvedLaunch.executable,None,python_lib_Subprocess.PIPE,python_lib_Subprocess.PIPE,None,False,False,resolvedLaunch.cwd,resolvedLaunch.env)
+                    # src/a8/launcher/Launcher.hx:302
+                    def _hx_local_1(out):
+                        # src/a8/launcher/Launcher.hx:302
+                        out.write((("first output at " + HxOverrides.stringOrNull(a8_PathOps.timestampStr())) + "\n"))
+                    # src/a8/launcher/Launcher.hx:301
+                    firstIO = _hx_local_1
+                    # src/a8/launcher/Launcher.hx:305
+                    timestampStr = a8_PathOps.timestampStr()
+                    # src/a8/launcher/Launcher.hx:307
+                    self.logTrace("setting up pipes",_hx_AnonObject({'fileName': "Launcher.hx", 'lineNumber': 307, 'className': "a8.launcher.Launcher", 'methodName': "runAndWait"}))
+                    # src/a8/launcher/Launcher.hx:308
+                    self.pipedStdout = a8_launcher_PipedStream(self,a8_StreamOps.asInputStream(popen.stdout),python_lib_Sys.stdout,"details",firstIO,Reflect.field(self.config,"logFiles"),timestampStr)
+                    # src/a8/launcher/Launcher.hx:309
+                    self.pipedStderr = a8_launcher_PipedStream(self,a8_StreamOps.asInputStream(popen.stderr),python_lib_Sys.stderr,"errors",firstIO,Reflect.field(self.config,"logFiles"),timestampStr)
+                    # src/a8/launcher/Launcher.hx:311
+                    self.pipedStdout.start()
+                    # src/a8/launcher/Launcher.hx:312
+                    self.pipedStderr.start()
+                    # src/a8/launcher/Launcher.hx:316
+                    self.logTrace("initializeLogRollers",_hx_AnonObject({'fileName': "Launcher.hx", 'lineNumber': 316, 'className': "a8.launcher.Launcher", 'methodName': "runAndWait"}))
+                    # src/a8/launcher/Launcher.hx:317
+                    self.initializeLogRollers()
+                    # src/a8/launcher/Launcher.hx:318
+                    self.logTrace("initializeLogRollers complete",_hx_AnonObject({'fileName': "Launcher.hx", 'lineNumber': 318, 'className': "a8.launcher.Launcher", 'methodName': "runAndWait"}))
+                    # src/a8/launcher/Launcher.hx:321
+                    popen.wait()
+                    # src/a8/launcher/Launcher.hx:324
+                    self.pipedStdout.close()
+                    # src/a8/launcher/Launcher.hx:325
+                    self.pipedStdout.close()
+                else:
+                    raise _HxException(a8_Exception("don't know how to handle ResolvedLaunch.kind = ${resolvedLaunch.kind}",None,_hx_AnonObject({'fileName': "Launcher.hx", 'lineNumber': 327, 'className': "a8.launcher.Launcher", 'methodName': "runAndWait"})))
             else:
-                raise _HxException("don't know how to handle ResolvedLaunch.kind = ${resolvedLaunch.kind}")
-        elif (_hx_local_0 == 5):
-            if (_g1 == "popen"):
-                # src/a8/launcher/Launcher.hx:281
-                self.logDetail(("running -- " + Std.string(resolvedLaunch.args)))
-                # src/a8/launcher/Launcher.hx:283
-                popen = python_lib_subprocess_Popen(resolvedLaunch.args,None,resolvedLaunch.executable,None,python_lib_Subprocess.PIPE,python_lib_Subprocess.PIPE,None,False,False,resolvedLaunch.cwd,resolvedLaunch.env)
-                # src/a8/launcher/Launcher.hx:286
-                def _hx_local_1(out):
-                    # src/a8/launcher/Launcher.hx:286
-                    out.write((("first output at " + HxOverrides.stringOrNull(a8_PathOps.timestampStr())) + "\n"))
-                # src/a8/launcher/Launcher.hx:285
-                firstIO = _hx_local_1
-                # src/a8/launcher/Launcher.hx:289
-                timestampStr = a8_PathOps.timestampStr()
-                # src/a8/launcher/Launcher.hx:291
-                self.logDetail("setting up pipes")
-                # src/a8/launcher/Launcher.hx:292
-                self.pipedStdout = a8_launcher_PipedStream(self,a8_StreamOps.asInputStream(popen.stdout),python_lib_Sys.stdout,"details",firstIO,Reflect.field(self.config,"logFiles"),timestampStr)
-                # src/a8/launcher/Launcher.hx:293
-                self.pipedStderr = a8_launcher_PipedStream(self,a8_StreamOps.asInputStream(popen.stderr),python_lib_Sys.stderr,"errors",firstIO,Reflect.field(self.config,"logFiles"),timestampStr)
-                # src/a8/launcher/Launcher.hx:295
-                self.pipedStdout.start()
-                # src/a8/launcher/Launcher.hx:296
-                self.pipedStderr.start()
-                # src/a8/launcher/Launcher.hx:300
-                self.logDetail("initializeLogRollers")
-                # src/a8/launcher/Launcher.hx:301
-                self.initializeLogRollers()
-                # src/a8/launcher/Launcher.hx:302
-                self.logDetail("initializeLogRollers complete")
-                # src/a8/launcher/Launcher.hx:305
-                popen.wait()
-                # src/a8/launcher/Launcher.hx:308
-                self.pipedStdout.close()
-                # src/a8/launcher/Launcher.hx:309
-                self.pipedStdout.close()
-            else:
-                raise _HxException("don't know how to handle ResolvedLaunch.kind = ${resolvedLaunch.kind}")
-        else:
-            raise _HxException("don't know how to handle ResolvedLaunch.kind = ${resolvedLaunch.kind}")
+                raise _HxException(a8_Exception("don't know how to handle ResolvedLaunch.kind = ${resolvedLaunch.kind}",None,_hx_AnonObject({'fileName': "Launcher.hx", 'lineNumber': 327, 'className': "a8.launcher.Launcher", 'methodName': "runAndWait"})))
 
     def initializeLogRollers(self):
-        # src/a8/launcher/Launcher.hx:316
+        # src/a8/launcher/Launcher.hx:333
         _gthis = self
-        # src/a8/launcher/Launcher.hx:320
+        # src/a8/launcher/Launcher.hx:337
         def _hx_local_0(lr):
-            # src/a8/launcher/Launcher.hx:320
+            # src/a8/launcher/Launcher.hx:337
             return a8_launcher_LogRollerOps.fromConfig(lr,_gthis)
-        # src/a8/launcher/Launcher.hx:317
+        # src/a8/launcher/Launcher.hx:334
         self.logRollers = list(map(_hx_local_0,Reflect.field(self.config,"logRollers")))
-        # src/a8/launcher/Launcher.hx:321
+        # src/a8/launcher/Launcher.hx:338
         def _hx_local_1(i):
-            # src/a8/launcher/Launcher.hx:321
+            # src/a8/launcher/Launcher.hx:338
             i.init()
             return
         Lambda.iter(self.logRollers,_hx_local_1)
 
     def get_a8VersionsCache(self):
-        # src/a8/launcher/Launcher.hx:27
+        # src/a8/launcher/Launcher.hx:25
         return self.lazy_a8VersionsCache.get()
 
     def get_installDir(self):
-        # src/a8/launcher/Launcher.hx:30
+        # src/a8/launcher/Launcher.hx:28
         return self.lazy_installDir.get()
 
     def get_logsDir(self):
-        # src/a8/launcher/Launcher.hx:31
+        # src/a8/launcher/Launcher.hx:29
         return self.lazy_logsDir.get()
 
     def get_logArchivesDir(self):
-        # src/a8/launcher/Launcher.hx:32
+        # src/a8/launcher/Launcher.hx:30
         return self.lazy_logArchivesDir.get()
 
     @staticmethod
@@ -2015,7 +2843,7 @@ class a8_launcher_MidnightLogRoller(a8_launcher_AbstractLogRoller):
 
     def doMidnightRollover(self):
         # src/a8/launcher/LogRoller.hx:53
-        self.launcher.logDetail("running doMidnightRollover")
+        self.launcher.logTrace("running doMidnightRollover",_hx_AnonObject({'fileName': "LogRoller.hx", 'lineNumber': 53, 'className': "a8.launcher.MidnightLogRoller", 'methodName': "doMidnightRollover"}))
         # src/a8/launcher/LogRoller.hx:54
         timestampStr = a8_PathOps.timestampStr()
         # src/a8/launcher/LogRoller.hx:56
@@ -2025,7 +2853,7 @@ class a8_launcher_MidnightLogRoller(a8_launcher_AbstractLogRoller):
         # src/a8/launcher/LogRoller.hx:58
         self.schedule()
         # src/a8/launcher/LogRoller.hx:59
-        self.launcher.logDetail("doMidnightRollover complete")
+        self.launcher.logTrace("doMidnightRollover complete",_hx_AnonObject({'fileName': "LogRoller.hx", 'lineNumber': 59, 'className': "a8.launcher.MidnightLogRoller", 'methodName': "doMidnightRollover"}))
 
 a8_launcher_MidnightLogRoller._hx_class = a8_launcher_MidnightLogRoller
 
@@ -2087,78 +2915,96 @@ class a8_launcher_Main:
     def loadConfig():
         # src/a8/launcher/Main.hx:17
         execPath = a8_PathOps.executablePath()
-        # src/a8/launcher/Main.hx:19
+        # src/a8/launcher/Main.hx:18
         appName = execPath.file
         # src/a8/launcher/Main.hx:20
-        configFile = a8_PathOps.entry(a8_PathOps.parent(execPath),(HxOverrides.stringOrNull(execPath.file) + ".json"))
+        configExtensions = [".json", ".launcher.json"]
+        # src/a8/launcher/Main.hx:25
+        def _hx_local_2(l):
+            # src/a8/launcher/Main.hx:25
+            def _hx_local_1():
+                # src/a8/launcher/Main.hx:25
+                def _hx_local_0(e):
+                    # src/a8/launcher/Main.hx:25
+                    return a8_PathOps.entry(a8_PathOps.parent(l),(HxOverrides.stringOrNull(a8_PathOps.name(l)) + ("null" if e is None else e)))
+                return list(map(_hx_local_0,configExtensions))
+            return _hx_local_1()
         # src/a8/launcher/Main.hx:22
+        possibleConfigFiles = Lambda.array(Lambda.flatMap(a8_PathOps.symlinkChain(execPath),_hx_local_2))
+        # src/a8/launcher/Main.hx:33
+        def _hx_local_3(f):
+            # src/a8/launcher/Main.hx:33
+            return a8_PathOps.exists(f)
+        # src/a8/launcher/Main.hx:31
+        configFile = Lambda.find(possibleConfigFiles,_hx_local_3)
+        # src/a8/launcher/Main.hx:36
         config = python_lib_Json.loads(a8_PathOps.readText(configFile),**python__KwArgs_KwArgs_Impl_.fromT(_hx_AnonObject({'object_hook': python_Lib.dictToAnon})))
-        # src/a8/launcher/Main.hx:24
+        # src/a8/launcher/Main.hx:38
         if (Reflect.field(config,"quiet") is None):
             Reflect.setField(config,"quiet",False)
-        # src/a8/launcher/Main.hx:27
+        # src/a8/launcher/Main.hx:41
         if (Reflect.field(config,"logRollers") is None):
             Reflect.setField(config,"logRollers",[])
-        # src/a8/launcher/Main.hx:30
+        # src/a8/launcher/Main.hx:44
         if (Reflect.field(config,"logFiles") is None):
             Reflect.setField(config,"logFiles",True)
-        # src/a8/launcher/Main.hx:33
+        # src/a8/launcher/Main.hx:47
         if (config.kind == "jvm_cli"):
-            # src/a8/launcher/Main.hx:34
+            # src/a8/launcher/Main.hx:48
             jvmLaunchConfig = config
-            # src/a8/launcher/Main.hx:35
+            # src/a8/launcher/Main.hx:49
             Reflect.setField(config,"installDir",None)
-            # src/a8/launcher/Main.hx:36
+            # src/a8/launcher/Main.hx:50
             Reflect.setField(config,"logFiles",False)
-            # src/a8/launcher/Main.hx:37
+            # src/a8/launcher/Main.hx:51
             Reflect.setField(config,"logRollers",[])
-        # src/a8/launcher/Main.hx:39
+        # src/a8/launcher/Main.hx:53
         if ((config.kind == "jvm") or ((config.kind == "jvm_cli"))):
-            # src/a8/launcher/Main.hx:40
+            # src/a8/launcher/Main.hx:54
             jvmLaunchConfig1 = config
-            # src/a8/launcher/Main.hx:41
+            # src/a8/launcher/Main.hx:55
             if (Reflect.field(jvmLaunchConfig1,"jvmArgs") is None):
                 Reflect.setField(jvmLaunchConfig1,"jvmArgs",[])
-            # src/a8/launcher/Main.hx:43
+            # src/a8/launcher/Main.hx:57
             if (Reflect.field(jvmLaunchConfig1,"args") is None):
                 Reflect.setField(jvmLaunchConfig1,"args",[])
-        # src/a8/launcher/Main.hx:48
+        # src/a8/launcher/Main.hx:62
         return config
 
     @staticmethod
     def main():
-        # src/a8/launcher/Main.hx:54
+        # src/a8/launcher/Main.hx:68
         try:
-            # src/a8/launcher/Main.hx:56
+            # src/a8/launcher/Main.hx:70
             execPath = a8_PathOps.executablePath()
-            # src/a8/launcher/Main.hx:58
-            appName = execPath.file
-            # src/a8/launcher/Main.hx:60
-            config = a8_launcher_Main.loadConfig()
-            # src/a8/launcher/Main.hx:62
-            args = list(python_lib_Sys.argv)
-            # src/a8/launcher/Main.hx:63
-            if (len(args) != 0):
-                args.pop(0)
-            # src/a8/launcher/Main.hx:65
-            launcher = a8_launcher_Launcher(config,appName,args)
             # src/a8/launcher/Main.hx:72
+            appName = execPath.file
+            # src/a8/launcher/Main.hx:74
+            initialConfig = a8_launcher_Main.loadConfig()
+            # src/a8/launcher/Main.hx:76
+            args = list(python_lib_Sys.argv)
+            # src/a8/launcher/Main.hx:77
+            Reflect.setField(initialConfig,"rawCommandLineArgs",args)
+            # src/a8/launcher/Main.hx:79
+            clp = a8_launcher_CommandLineProcessor()
+            # src/a8/launcher/Main.hx:80
+            config = clp.apply(initialConfig)
+            # src/a8/launcher/Main.hx:82
+            a8_Logger.traceEnabled = (not Reflect.field(config,"quiet"))
+            # src/a8/launcher/Main.hx:84
+            launcher = a8_launcher_Launcher(config,appName,args)
+            # src/a8/launcher/Main.hx:91
             launcher.runAndWait()
         except Exception as _hx_e:
             _hx_e1 = _hx_e.val if isinstance(_hx_e, _HxException) else _hx_e
             e = _hx_e1
-            # src/a8/launcher/Main.hx:74
-            print(("ERROR - " + Std.string(e)))
-            # src/a8/launcher/Main.hx:75
-            def _hx_local_0(si):
-                # src/a8/launcher/Main.hx:76
-                print(("   " + Std.string(si)))
-                # src/a8/launcher/Main.hx:75
-                return
-            Lambda.iter(haxe_CallStack.callStack(),_hx_local_0)
-            # src/a8/launcher/Main.hx:78
+            # src/a8/launcher/Main.hx:93
+            stack = haxe_CallStack.exceptionStack()
+            # src/a8/launcher/Main.hx:94
+            a8_Logger.warn(((("" + Std.string(e)) + "\n") + HxOverrides.stringOrNull(a8_HaxeOps2.asString(stack,"    "))),_hx_AnonObject({'fileName': "Main.hx", 'lineNumber': 94, 'className': "a8.launcher.Main", 'methodName': "main"}))
+            # src/a8/launcher/Main.hx:95
             Sys.exit(1)
-        # src/a8/launcher/Main.hx:81
+        # src/a8/launcher/Main.hx:98
         Sys.exit(0)
 a8_launcher_Main._hx_class = a8_launcher_Main
 
@@ -2259,7 +3105,7 @@ class a8_launcher_PipedStream:
             except Exception as _hx_e:
                 _hx_e1 = _hx_e.val if isinstance(_hx_e, _HxException) else _hx_e
                 e = _hx_e1
-                print(("error logging - " + Std.string(e)))
+                a8_Logger.warn(("error logging - " + Std.string(e)),_hx_AnonObject({'fileName': "PipedStream.hx", 'lineNumber': 66, 'className': "a8.launcher.PipedStream", 'methodName': "log"}))
 
     def rollover(self,timestampStr):
         # src/a8/launcher/PipedStream.hx:73
@@ -2289,7 +3135,7 @@ class a8_launcher_PipedStream:
             # src/a8/launcher/PipedStream.hx:88
             self.launcher.archiveLogFiles([oldFileoutputPath])
         elif (_g1 == 1):
-            raise _HxException("this should not happen since rollover should never get called when we don't have a Some for outputFile: Option<PipedStreamOutputFile>")
+            raise _HxException(a8_Exception("this should not happen since rollover should never get called when we don't have a Some for outputFile: Option<PipedStreamOutputFile>",None,_hx_AnonObject({'fileName': "PipedStream.hx", 'lineNumber': 92, 'className': "a8.launcher.PipedStream", 'methodName': "rollover"})))
         else:
             pass
 
@@ -2329,7 +3175,7 @@ haxe_StackItem._hx_class = haxe_StackItem
 class haxe_CallStack:
     _hx_class_name = "haxe.CallStack"
     __slots__ = ()
-    _hx_statics = ["callStack"]
+    _hx_statics = ["callStack", "exceptionStack"]
 
     @staticmethod
     def callStack():
@@ -2353,6 +3199,31 @@ class haxe_CallStack:
             x = haxe_StackItem.FilePos(None,elem[0],elem[1])
             stack.append(x)
         # /Users/glen/tools-a8/packages/haxe/current/std/haxe/CallStack.hx:128
+        return stack
+
+    @staticmethod
+    def exceptionStack():
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/CallStack.hx:211
+        stack = []
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/CallStack.hx:212
+        exc = python_lib_Sys.exc_info()
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/CallStack.hx:213
+        if (exc[2] is not None):
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/CallStack.hx:215
+            infos = python_lib_Traceback.extract_tb(exc[2])
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/CallStack.hx:216
+            infos.reverse()
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/CallStack.hx:217
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/CallStack.hx:217
+            _g = 0
+            while (_g < len(infos)):
+                elem = (infos[_g] if _g >= 0 and _g < len(infos) else None)
+                _g = (_g + 1)
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/CallStack.hx:218
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/CallStack.hx:218
+                x = haxe_StackItem.FilePos(None,elem[0],elem[1])
+                stack.append(x)
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/CallStack.hx:220
         return stack
 haxe_CallStack._hx_class = haxe_CallStack
 
@@ -2415,6 +3286,31 @@ class haxe_EntryPoint:
             if (nextTick > 0):
                 _this = haxe_EntryPoint.sleepLock
 haxe_EntryPoint._hx_class = haxe_EntryPoint
+
+
+class haxe_Log:
+    _hx_class_name = "haxe.Log"
+    __slots__ = ()
+    _hx_statics = ["trace"]
+
+    @staticmethod
+    def trace(v,infos = None):
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/Log.hx:105
+        _hx_str = None
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/Log.hx:106
+        if (infos is not None):
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/Log.hx:107
+            _hx_str = ((((HxOverrides.stringOrNull(infos.fileName) + ":") + Std.string(infos.lineNumber)) + ": ") + Std.string(v))
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/Log.hx:108
+            if (Reflect.field(infos,"customParams") is not None):
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/Log.hx:109
+                _this = Reflect.field(infos,"customParams")
+                _hx_str = (("null" if _hx_str is None else _hx_str) + HxOverrides.stringOrNull((("," + HxOverrides.stringOrNull(",".join([python_Boot.toString1(x1,'') for x1 in _this]))))))
+        else:
+            _hx_str = v
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/Log.hx:114
+        python_Lib.println(_hx_str)
+haxe_Log._hx_class = haxe_Log
 
 
 class haxe_MainEvent:
@@ -2705,15 +3601,323 @@ class haxe_ds_ObjectMap:
 
 haxe_ds_ObjectMap._hx_class = haxe_ds_ObjectMap
 
-class haxe_ds_Option(Enum):
-    __slots__ = ()
-    _hx_class_name = "haxe.ds.Option"
+
+class haxe_format_JsonPrinter:
+    _hx_class_name = "haxe.format.JsonPrinter"
+    __slots__ = ("buf", "replacer", "indent", "pretty", "nind")
+    _hx_fields = ["buf", "replacer", "indent", "pretty", "nind"]
+    _hx_methods = ["write", "fieldsString", "quote"]
+    _hx_statics = ["print"]
+
+    def __init__(self,replacer,space):
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:57
+        self.replacer = replacer
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:58
+        self.indent = space
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:59
+        self.pretty = (space is not None)
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:60
+        self.nind = 0
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:67
+        self.buf = StringBuf()
+
+    def write(self,k,v):
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:80
+        if (self.replacer is not None):
+            v = self.replacer(k,v)
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:81
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:81
+        _g = Type.typeof(v)
+        _g1 = _g.index
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:136
+        if (_g1 == 0):
+            self.buf.b.write("null")
+        elif (_g1 == 1):
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:87
+            _this = self.buf
+            s = Std.string(v)
+            _this.b.write(s)
+        elif (_g1 == 2):
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:89
+            v1 = None
+            f = v
+            if (((f != Math.POSITIVE_INFINITY) and ((f != Math.NEGATIVE_INFINITY))) and (not python_lib_Math.isnan(f))):
+                v1 = v
+            else:
+                v1 = "null"
+            _this1 = self.buf
+            s1 = Std.string(v1)
+            _this1.b.write(s1)
+        elif (_g1 == 3):
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:134
+            _this2 = self.buf
+            s2 = Std.string(v)
+            _this2.b.write(s2)
+        elif (_g1 == 4):
+            self.fieldsString(v,python_Boot.fields(v))
+        elif (_g1 == 5):
+            self.buf.b.write("\"<fun>\"")
+        elif (_g1 == 6):
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:92
+            c = _g.params[0]
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:93
+            if (c == str):
+                self.quote(v)
+            elif (c == list):
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:96
+                v2 = v
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:97
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:97
+                _this3 = self.buf
+                s3 = "".join(map(chr,[91]))
+                _this3.b.write(s3)
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:99
+                _hx_len = len(v2)
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:100
+                last = (_hx_len - 1)
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:101
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:101
+                _g11 = 0
+                _g2 = _hx_len
+                while (_g11 < _g2):
+                    i = _g11
+                    _g11 = (_g11 + 1)
+                    # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:103
+                    if (i > 0):
+                        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:103
+                        _this4 = self.buf
+                        s4 = "".join(map(chr,[44]))
+                        _this4.b.write(s4)
+                    else:
+                        _hx_local_0 = self
+                        _hx_local_1 = _hx_local_0.nind
+                        _hx_local_0.nind = (_hx_local_1 + 1)
+                        _hx_local_1
+                    # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:104
+                    if self.pretty:
+                        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:104
+                        _this5 = self.buf
+                        s5 = "".join(map(chr,[10]))
+                        _this5.b.write(s5)
+                    # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:105
+                    if self.pretty:
+                        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:105
+                        v3 = StringTools.lpad("",self.indent,(self.nind * len(self.indent)))
+                        _this6 = self.buf
+                        s6 = Std.string(v3)
+                        _this6.b.write(s6)
+                    # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:106
+                    self.write(i,(v2[i] if i >= 0 and i < len(v2) else None))
+                    # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:107
+                    if (i == last):
+                        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:109
+                        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:109
+                        _hx_local_2 = self
+                        _hx_local_3 = _hx_local_2.nind
+                        _hx_local_2.nind = (_hx_local_3 - 1)
+                        _hx_local_3
+                        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:110
+                        if self.pretty:
+                            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:110
+                            _this7 = self.buf
+                            s7 = "".join(map(chr,[10]))
+                            _this7.b.write(s7)
+                        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:111
+                        if self.pretty:
+                            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:111
+                            v4 = StringTools.lpad("",self.indent,(self.nind * len(self.indent)))
+                            _this8 = self.buf
+                            s8 = Std.string(v4)
+                            _this8.b.write(s8)
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:114
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:114
+                _this9 = self.buf
+                s9 = "".join(map(chr,[93]))
+                _this9.b.write(s9)
+            elif (c == haxe_ds_StringMap):
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:116
+                v5 = v
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:117
+                o = _hx_AnonObject({})
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:118
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:118
+                k1 = v5.keys()
+                while k1.hasNext():
+                    k2 = k1.next()
+                    # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:119
+                    value = v5.h.get(k2,None)
+                    setattr(o,(("_hx_" + k2) if ((k2 in python_Boot.keywords)) else (("_hx_" + k2) if (((((len(k2) > 2) and ((ord(k2[0]) == 95))) and ((ord(k2[1]) == 95))) and ((ord(k2[(len(k2) - 1)]) != 95)))) else k2)),value)
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:120
+                self.fieldsString(o,python_Boot.fields(o))
+            elif (c == Date):
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:122
+                v6 = v
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:123
+                self.quote(v6.toString())
+            else:
+                self.fieldsString(v,python_Boot.fields(v))
+        elif (_g1 == 7):
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:131
+            i1 = v.index
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:132
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:132
+            _this10 = self.buf
+            s10 = Std.string(i1)
+            _this10.b.write(s10)
+        elif (_g1 == 8):
+            self.buf.b.write("\"???\"")
+        else:
+            pass
+
+    def fieldsString(self,v,fields):
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:168
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:168
+        _this = self.buf
+        s = "".join(map(chr,[123]))
+        _this.b.write(s)
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:169
+        _hx_len = len(fields)
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:170
+        last = (_hx_len - 1)
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:171
+        first = True
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:172
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:172
+        _g1 = 0
+        _g = _hx_len
+        while (_g1 < _g):
+            i = _g1
+            _g1 = (_g1 + 1)
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:173
+            f = (fields[i] if i >= 0 and i < len(fields) else None)
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:174
+            value = Reflect.field(v,f)
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:175
+            if Reflect.isFunction(value):
+                continue
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:176
+            if first:
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:176
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:176
+                _hx_local_0 = self
+                _hx_local_1 = _hx_local_0.nind
+                _hx_local_0.nind = (_hx_local_1 + 1)
+                _hx_local_1
+                first = False
+            else:
+                _this1 = self.buf
+                s1 = "".join(map(chr,[44]))
+                _this1.b.write(s1)
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:177
+            if self.pretty:
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:177
+                _this2 = self.buf
+                s2 = "".join(map(chr,[10]))
+                _this2.b.write(s2)
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:178
+            if self.pretty:
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:178
+                v1 = StringTools.lpad("",self.indent,(self.nind * len(self.indent)))
+                _this3 = self.buf
+                s3 = Std.string(v1)
+                _this3.b.write(s3)
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:179
+            self.quote(f)
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:180
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:180
+            _this4 = self.buf
+            s4 = "".join(map(chr,[58]))
+            _this4.b.write(s4)
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:181
+            if self.pretty:
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:181
+                _this5 = self.buf
+                s5 = "".join(map(chr,[32]))
+                _this5.b.write(s5)
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:182
+            self.write(f,value)
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:183
+            if (i == last):
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:185
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:185
+                _hx_local_2 = self
+                _hx_local_3 = _hx_local_2.nind
+                _hx_local_2.nind = (_hx_local_3 - 1)
+                _hx_local_3
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:186
+                if self.pretty:
+                    # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:186
+                    _this6 = self.buf
+                    s6 = "".join(map(chr,[10]))
+                    _this6.b.write(s6)
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:187
+                if self.pretty:
+                    # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:187
+                    v2 = StringTools.lpad("",self.indent,(self.nind * len(self.indent)))
+                    _this7 = self.buf
+                    s7 = Std.string(v2)
+                    _this7.b.write(s7)
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:190
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:190
+        _this8 = self.buf
+        s8 = "".join(map(chr,[125]))
+        _this8.b.write(s8)
+
+    def quote(self,s):
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:200
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:200
+        _this = self.buf
+        s1 = "".join(map(chr,[34]))
+        _this.b.write(s1)
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:201
+        i = 0
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:202
+        while True:
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:203
+            index = i
+            i = (i + 1)
+            c = (-1 if ((index >= len(s))) else ord(s[index]))
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:204
+            if (c == -1):
+                break
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:205
+            c1 = c
+            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:211
+            if (c1 == 8):
+                self.buf.b.write("\\b")
+            elif (c1 == 9):
+                self.buf.b.write("\\t")
+            elif (c1 == 10):
+                self.buf.b.write("\\n")
+            elif (c1 == 12):
+                self.buf.b.write("\\f")
+            elif (c1 == 13):
+                self.buf.b.write("\\r")
+            elif (c1 == 34):
+                self.buf.b.write("\\\"")
+            elif (c1 == 92):
+                self.buf.b.write("\\\\")
+            else:
+                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:217
+                _this1 = self.buf
+                s2 = "".join(map(chr,[c]))
+                _this1.b.write(s2)
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:221
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:221
+        _this2 = self.buf
+        s3 = "".join(map(chr,[34]))
+        _this2.b.write(s3)
 
     @staticmethod
-    def Some(v):
-        return haxe_ds_Option("Some", 0, [v])
-haxe_ds_Option._hx_None = haxe_ds_Option("None", 1, list())
-haxe_ds_Option._hx_class = haxe_ds_Option
+    def print(o,replacer = None,space = None):
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:45
+        printer = haxe_format_JsonPrinter(replacer,space)
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:46
+        printer.write("",o)
+        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/format/JsonPrinter.hx:47
+        return printer.buf.b.getvalue()
+
+haxe_format_JsonPrinter._hx_class = haxe_format_JsonPrinter
 
 
 class haxe_io_Bytes:
@@ -2919,98 +4123,6 @@ haxe_io_Error.Blocked = haxe_io_Error("Blocked", 0, list())
 haxe_io_Error.Overflow = haxe_io_Error("Overflow", 1, list())
 haxe_io_Error.OutsideBounds = haxe_io_Error("OutsideBounds", 2, list())
 haxe_io_Error._hx_class = haxe_io_Error
-
-
-class haxe_io_Path:
-    _hx_class_name = "haxe.io.Path"
-    __slots__ = ("dir", "file", "ext", "backslash")
-    _hx_fields = ["dir", "file", "ext", "backslash"]
-    _hx_methods = ["toString"]
-    _hx_statics = ["isAbsolute"]
-
-    def __init__(self,path):
-        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:68
-        self.backslash = None
-        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:63
-        self.ext = None
-        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:53
-        self.file = None
-        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:43
-        self.dir = None
-        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:77
-        path1 = path
-        _hx_local_0 = len(path1)
-        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:78
-        if (_hx_local_0 == 1):
-            if (path1 == "."):
-                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:79
-                self.dir = path
-                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:80
-                self.file = ""
-                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:81
-                return
-        elif (_hx_local_0 == 2):
-            if (path1 == ".."):
-                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:79
-                self.dir = path
-                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:80
-                self.file = ""
-                # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:81
-                return
-        else:
-            pass
-        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:83
-        c1 = path.rfind("/", 0, len(path))
-        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:84
-        c2 = path.rfind("\\", 0, len(path))
-        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:85
-        if (c1 < c2):
-            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:86
-            self.dir = HxString.substr(path,0,c2)
-            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:87
-            path = HxString.substr(path,(c2 + 1),None)
-            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:88
-            self.backslash = True
-        elif (c2 < c1):
-            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:90
-            self.dir = HxString.substr(path,0,c1)
-            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:91
-            path = HxString.substr(path,(c1 + 1),None)
-        else:
-            self.dir = None
-        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:94
-        cp = path.rfind(".", 0, len(path))
-        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:95
-        if (cp != -1):
-            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:96
-            self.ext = HxString.substr(path,(cp + 1),None)
-            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:97
-            self.file = HxString.substr(path,0,cp)
-        else:
-            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:99
-            self.ext = None
-            # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:100
-            self.file = path
-
-    def toString(self):
-        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:115
-        return ((HxOverrides.stringOrNull((("" if ((self.dir is None)) else (HxOverrides.stringOrNull(self.dir) + HxOverrides.stringOrNull((("\\" if (self.backslash) else "/"))))))) + HxOverrides.stringOrNull(self.file)) + HxOverrides.stringOrNull((("" if ((self.ext is None)) else ("." + HxOverrides.stringOrNull(self.ext))))))
-
-    @staticmethod
-    def isAbsolute(path):
-        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:302
-        if StringTools.startsWith(path,"/"):
-            return True
-        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:303
-        if ((("" if ((1 >= len(path))) else path[1])) == ":"):
-            return True
-        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:304
-        if StringTools.startsWith(path,"\\\\"):
-            return True
-        # /Users/glen/tools-a8/packages/haxe/current/std/haxe/io/Path.hx:305
-        return False
-
-haxe_io_Path._hx_class = haxe_io_Path
 
 
 class python_Boot:
@@ -3818,108 +4930,6 @@ class HxOverrides:
 HxOverrides._hx_class = HxOverrides
 
 
-class HxString:
-    _hx_class_name = "HxString"
-    __slots__ = ()
-    _hx_statics = ["split", "charCodeAt", "charAt", "lastIndexOf", "toUpperCase", "toLowerCase", "indexOf", "toString", "substring", "substr"]
-
-    @staticmethod
-    def split(s,d):
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:31
-        if (d == ""):
-            return list(s)
-        else:
-            return s.split(d)
-
-    @staticmethod
-    def charCodeAt(s,index):
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:37
-        if ((((s is None) or ((len(s) == 0))) or ((index < 0))) or ((index >= len(s)))):
-            return None
-        else:
-            return ord(s[index])
-
-    @staticmethod
-    def charAt(s,index):
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:43
-        if ((index < 0) or ((index >= len(s)))):
-            return ""
-        else:
-            return s[index]
-
-    @staticmethod
-    def lastIndexOf(s,_hx_str,startIndex = None):
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:48
-        if (startIndex is None):
-            return s.rfind(_hx_str, 0, len(s))
-        else:
-            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:52
-            i = s.rfind(_hx_str, 0, (startIndex + 1))
-            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:53
-            startLeft = (max(0,((startIndex + 1) - len(_hx_str))) if ((i == -1)) else (i + 1))
-            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:54
-            check = s.find(_hx_str, startLeft, len(s))
-            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:55
-            if ((check > i) and ((check <= startIndex))):
-                return check
-            else:
-                return i
-
-    @staticmethod
-    def toUpperCase(s):
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:66
-        return s.upper()
-
-    @staticmethod
-    def toLowerCase(s):
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:70
-        return s.lower()
-
-    @staticmethod
-    def indexOf(s,_hx_str,startIndex = None):
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:74
-        if (startIndex is None):
-            return s.find(_hx_str)
-        else:
-            return s.find(_hx_str, startIndex)
-
-    @staticmethod
-    def toString(s):
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:81
-        return s
-
-    @staticmethod
-    def substring(s,startIndex,endIndex = None):
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:97
-        if (startIndex < 0):
-            startIndex = 0
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:98
-        if (endIndex is None):
-            return s[startIndex:]
-        else:
-            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:101
-            if (endIndex < 0):
-                endIndex = 0
-            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:102
-            if (endIndex < startIndex):
-                return s[endIndex:startIndex]
-            else:
-                return s[startIndex:endIndex]
-
-    @staticmethod
-    def substr(s,startIndex,_hx_len = None):
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:113
-        if (_hx_len is None):
-            return s[startIndex:]
-        else:
-            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:116
-            if (_hx_len == 0):
-                return ""
-            # /Users/glen/tools-a8/packages/haxe/current/std/python/internal/StringImpl.hx:117
-            return s[startIndex:(startIndex + _hx_len)]
-HxString._hx_class = HxString
-
-
 class python_io_NativeInput(haxe_io_Input):
     _hx_class_name = "python.io.NativeInput"
     __slots__ = ("stream", "wasEof")
@@ -4087,55 +5097,6 @@ class python_io_IoTools:
 python_io_IoTools._hx_class = python_io_IoTools
 
 
-class sys_io_File:
-    _hx_class_name = "sys.io.File"
-    __slots__ = ()
-    _hx_statics = ["getContent", "saveContent", "getBytes", "saveBytes"]
-
-    @staticmethod
-    def getContent(path):
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:32
-        f = python_lib_Builtins.open(path,"r",-1,"utf-8",None,"")
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:33
-        content = f.read(-1)
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:34
-        f.close()
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:35
-        return content
-
-    @staticmethod
-    def saveContent(path,content):
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:39
-        f = python_lib_Builtins.open(path,"w",-1,"utf-8",None,"")
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:40
-        f.write(content)
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:41
-        f.close()
-
-    @staticmethod
-    def getBytes(path):
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:45
-        f = python_lib_Builtins.open(path,"rb",-1)
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:46
-        size = f.read(-1)
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:47
-        b = haxe_io_Bytes.ofData(size)
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:48
-        f.close()
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:49
-        return b
-
-    @staticmethod
-    def saveBytes(path,_hx_bytes):
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:53
-        f = python_lib_Builtins.open(path,"wb",-1)
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:54
-        f.write(_hx_bytes.b)
-        # /Users/glen/tools-a8/packages/haxe/current/std/python/_std/sys/io/File.hx:55
-        f.close()
-sys_io_File._hx_class = sys_io_File
-
-
 class sys_io_FileInput(haxe_io_Input):
     _hx_class_name = "sys.io.FileInput"
     __slots__ = ("impl",)
@@ -4206,24 +5167,12 @@ class tink_core_Annex:
     _hx_fields = ["target", "registry"]
 
     def __init__(self,target):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Annex.hx:16
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Annex.hx:16
         self.target = target
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Annex.hx:17
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Annex.hx:17
         self.registry = haxe_ds_ObjectMap()
 
 tink_core_Annex._hx_class = tink_core_Annex
-
-
-class tink_core__Any_Any_Impl_:
-    _hx_class_name = "tink.core._Any.Any_Impl_"
-    __slots__ = ()
-    _hx_statics = ["__promote"]
-
-    @staticmethod
-    def _hx___promote(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Any.hx:4
-        return this1
-tink_core__Any_Any_Impl_._hx_class = tink_core__Any_Any_Impl_
 
 
 class tink_core__Callback_Callback_Impl_:
@@ -4233,35 +5182,35 @@ class tink_core__Callback_Callback_Impl_:
 
     @staticmethod
     def _new(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:5
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:5
         this1 = f
         return this1
 
     @staticmethod
     def toFunction(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:9
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:9
         return this1
 
     @staticmethod
     def invoke(this1,data):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:14
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:14
         if (tink_core__Callback_Callback_Impl_.depth < 1000):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:15
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:15
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:15
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:15
             _hx_local_0 = tink_core__Callback_Callback_Impl_
             _hx_local_1 = _hx_local_0.depth
             _hx_local_0.depth = (_hx_local_1 + 1)
             _hx_local_1
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:16
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:16
             this1(data)
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:17
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:17
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:17
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:17
             _hx_local_2 = tink_core__Callback_Callback_Impl_
             _hx_local_3 = _hx_local_2.depth
             _hx_local_2.depth = (_hx_local_3 - 1)
             _hx_local_3
         else:
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:19
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:19
             _e = this1
             def _hx_local_4(data1):
                 tink_core__Callback_Callback_Impl_.invoke(_e,data1)
@@ -4273,41 +5222,41 @@ class tink_core__Callback_Callback_Impl_:
 
     @staticmethod
     def ignore(cb):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:22
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:22
         def _hx_local_1():
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:22
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:22
             def _hx_local_0():
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:22
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:22
                 tink_core__Callback_Callback_Impl_.invoke(cb,tink_core_Noise.Noise)
             return tink_core__Callback_Callback_Impl_.fromNiladic(_hx_local_0)
         return _hx_local_1()
 
     @staticmethod
     def fromNiladic(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:25
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:25
         def _hx_local_0(r):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:25
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:25
             f()
         this1 = _hx_local_0
         return this1
 
     @staticmethod
     def fromMany(callbacks):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:29
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:29
         def _hx_local_0(v):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:30
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:30
             _g = 0
             while (_g < len(callbacks)):
                 callback = (callbacks[_g] if _g >= 0 and _g < len(callbacks) else None)
                 _g = (_g + 1)
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:31
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:31
                 tink_core__Callback_Callback_Impl_.invoke(callback,v)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:28
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:28
         return _hx_local_0
 
     @staticmethod
     def defer(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:47
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:47
         haxe_Timer.delay(f,0)
 tink_core__Callback_Callback_Impl_._hx_class = tink_core__Callback_Callback_Impl_
 
@@ -4326,46 +5275,46 @@ class tink_core__Callback_CallbackLink_Impl_:
 
     @staticmethod
     def _new(link):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:59
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:59
         this1 = tink_core__Callback_SimpleLink(link)
         return this1
 
     @staticmethod
     def cancel(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:63
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:63
         if (this1 is not None):
             this1.dissolve()
 
     @staticmethod
     def dissolve(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:66
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:66
         if (this1 is not None):
             this1.dissolve()
 
     @staticmethod
     def toCallback(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:69
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:69
         def _hx_local_0(_):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:69
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:69
             this1.dissolve()
         return _hx_local_0
 
     @staticmethod
     def fromFunction(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:72
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:72
         this1 = tink_core__Callback_SimpleLink(f)
         return this1
 
     @staticmethod
     def join(a,b):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:75
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:75
         return tink_core__Callback_LinkPair(a,b)
 
     @staticmethod
     def fromMany(callbacks):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:78
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:78
         def _hx_local_1():
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:78
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:78
             _g = 0
             while (_g < len(callbacks)):
                 cb = (callbacks[_g] if _g >= 0 and _g < len(callbacks) else None)
@@ -4384,11 +5333,11 @@ class tink_core__Callback_SimpleLink:
     _hx_methods = ["dissolve"]
 
     def __init__(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:85
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:85
         self.f = f
 
     def dissolve(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:88
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:88
         if (self.f is not None):
             self.f()
 
@@ -4402,25 +5351,25 @@ class tink_core__Callback_LinkPair:
     _hx_methods = ["dissolve"]
 
     def __init__(self,a,b):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:95
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:95
         self.dissolved = False
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:97
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:97
         self.a = a
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:98
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:98
         self.b = b
 
     def dissolve(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:102
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:102
         if (not self.dissolved):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:103
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:103
             self.dissolved = True
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:104
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:104
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:104
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:104
             this1 = self.a
             if (this1 is not None):
                 this1.dissolve()
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:105
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:105
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:105
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:105
             this2 = self.b
             if (this2 is not None):
                 this2.dissolve()
@@ -4435,31 +5384,31 @@ class tink_core__Callback_ListCell:
     _hx_methods = ["invoke", "clear", "dissolve"]
 
     def __init__(self,cb,_hx_list):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:115
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:115
         if (cb is None):
             raise _HxException("callback expected but null received")
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:116
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:116
         self.cb = cb
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:117
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:117
         self.list = _hx_list
 
     def invoke(self,data):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:121
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:121
         if (self.cb is not None):
             tink_core__Callback_Callback_Impl_.invoke(self.cb,data)
 
     def clear(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:125
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:125
         self.list = None
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:126
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:126
         self.cb = None
 
     def dissolve(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:130
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:130
         _g = self.list
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:131
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:131
         if (_g is not None):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:132
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:132
             v = _g
             self.clear()
             python_internal_ArrayImpl.remove(v,self)
@@ -4475,39 +5424,39 @@ class tink_core__Callback_CallbackList_Impl_:
 
     @staticmethod
     def _new():
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:140
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:140
         this1 = []
         return this1
 
     @staticmethod
     def get_length(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:144
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:144
         return len(this1)
 
     @staticmethod
     def add(this1,cb):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:147
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:147
         node = tink_core__Callback_ListCell(cb,this1)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:148
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:148
         this1.append(node)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:149
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:149
         return node
 
     @staticmethod
     def invoke(this1,data):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:153
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:153
         _g = 0
         _g1 = list(this1)
         while (_g < len(_g1)):
             cell = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
             _g = (_g + 1)
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:154
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:154
             if (cell.cb is not None):
                 tink_core__Callback_Callback_Impl_.invoke(cell.cb,data)
 
     @staticmethod
     def clear(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:157
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:157
         _g = 0
         _hx_len = len(this1)
         pos = 0
@@ -4521,7 +5470,7 @@ class tink_core__Callback_CallbackList_Impl_:
         while (_g < len(_g1)):
             cell = (_g1[_g] if _g >= 0 and _g < len(_g1) else None)
             _g = (_g + 1)
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Callback.hx:158
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Callback.hx:158
             cell.clear()
 tink_core__Callback_CallbackList_Impl_._hx_class = tink_core__Callback_CallbackList_Impl_
 
@@ -4534,58 +5483,58 @@ class tink_core_TypedError:
     _hx_statics = ["withData", "typed", "asError", "catchExceptions", "reporter", "rethrow", "tryFinally"]
 
     def __init__(self,code = 500,message = None,pos = None):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:42
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:44
         if (code is None):
             code = 500
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:45
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:47
         self.data = None
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:49
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:51
         self.isTinkError = True
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:52
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:54
         self.code = code
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:53
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:55
         self.message = message
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:54
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:56
         self.pos = pos
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:55
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:57
         self.exceptionStack = []
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:56
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:58
         self.callStack = []
 
     def printPos(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:59
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:61
         return ((((HxOverrides.stringOrNull(self.pos.className) + ".") + HxOverrides.stringOrNull(self.pos.methodName)) + ":") + Std.string(self.pos.lineNumber))
 
     def toString(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:67
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:71
         ret = ((("Error#" + Std.string(self.code)) + ": ") + HxOverrides.stringOrNull(self.message))
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:68
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:73
         if (self.pos is not None):
             ret = (("null" if ret is None else ret) + HxOverrides.stringOrNull(((" @ " + HxOverrides.stringOrNull(self.printPos())))))
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:71
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:76
         return ret
 
     def throwSelf(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:83
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:88
         raise _HxException(self)
 
     @staticmethod
     def withData(code = None,message = None,data = None,pos = None):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:87
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:92
         return tink_core_TypedError.typed(code,message,data,pos)
 
     @staticmethod
     def typed(code = None,message = None,data = None,pos = None):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:91
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:96
         ret = tink_core_TypedError(code,message,pos)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:92
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:97
         ret.data = data
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:93
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:98
         return ret
 
     @staticmethod
     def asError(v):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:107
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:112
         value = v
         try:
             if isinstance(value,tink_core_TypedError):
@@ -4599,59 +5548,59 @@ class tink_core_TypedError:
 
     @staticmethod
     def catchExceptions(f,report = None,pos = None):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:112
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:117
         try:
             return tink_core_Outcome.Success(f())
         except Exception as _hx_e:
             _hx_e1 = _hx_e.val if isinstance(_hx_e, _HxException) else _hx_e
             e = _hx_e1
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:116
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:121
             _g = tink_core_TypedError.asError(e)
             tmp = None
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:117
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:122
             if (_g is None):
                 if (report is None):
                     tmp = tink_core_TypedError.withData(None,"Unexpected Error",e,pos)
                 else:
                     tmp = report(e)
             else:
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:122
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:127
                 e1 = _g
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:116
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:121
                 tmp = e1
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:115
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:120
             return tink_core_Outcome.Failure(tmp)
 
     @staticmethod
     def reporter(code = None,message = None,pos = None):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:128
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:133
         def _hx_local_0(e):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:128
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:133
             return tink_core_TypedError.withData(code,message,e,pos)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:127
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:132
         return _hx_local_0
 
     @staticmethod
     def rethrow(any):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:138
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:143
         raise _HxException(any)
 
     @staticmethod
     def tryFinally(f,cleanup):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:148
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:153
         try:
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:149
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:154
             ret = f()
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:150
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:155
             cleanup()
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:151
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:156
             return ret
         except Exception as _hx_e:
             _hx_e1 = _hx_e.val if isinstance(_hx_e, _HxException) else _hx_e
             e = _hx_e1
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:154
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:159
             cleanup()
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:155
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:160
             raise _HxException(e)
 
 tink_core_TypedError._hx_class = tink_core_TypedError
@@ -4664,7 +5613,7 @@ class tink_core__Error_Stack_Impl_:
 
     @staticmethod
     def toString(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Error.hx:165
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Error.hx:170
         return "Error stack not available. Compile with -D error_stack."
 tink_core__Error_Stack_Impl_._hx_class = tink_core__Error_Stack_Impl_
 
@@ -4686,23 +5635,23 @@ class tink_core__Future_NeverFuture:
         pass
 
     def map(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:217
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:217
         return tink_core__Future_NeverFuture.inst
 
     def flatMap(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:218
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:218
         return tink_core__Future_NeverFuture.inst
 
     def handle(self,callback):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:219
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:219
         return None
 
     def gather(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:220
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:220
         return tink_core__Future_NeverFuture.inst
 
     def eager(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:221
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:221
         return tink_core__Future_NeverFuture.inst
 
 tink_core__Future_NeverFuture._hx_class = tink_core__Future_NeverFuture
@@ -4728,19 +5677,19 @@ class tink_core__Lazy_LazyConst:
     _hx_methods = ["get", "map", "flatMap"]
 
     def __init__(self,value):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:32
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:32
         self.value = value
 
     def get(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:35
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:35
         return self.value
 
     def map(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:38
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:38
         return tink_core__Lazy_LazyConst(f(self.value))
 
     def flatMap(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:41
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:41
         return f(self.value)
 
 tink_core__Lazy_LazyConst._hx_class = tink_core__Lazy_LazyConst
@@ -4753,38 +5702,38 @@ class tink_core__Future_SyncFuture:
     _hx_methods = ["map", "flatMap", "handle", "eager", "gather"]
 
     def __init__(self,value):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:229
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:229
         self.value = value
 
     def map(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:232
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:232
         return tink_core__Future_SyncFuture(self.value.map(f))
 
     def flatMap(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:236
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:236
         l = self.value.map(f)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:235
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:235
         def _hx_local_1():
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:237
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:237
             def _hx_local_0(cb):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:237
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:237
                 return l.get().handle(cb)
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:235
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:235
             return tink_core__Future_SimpleFuture(_hx_local_0)
         return _hx_local_1()
 
     def handle(self,cb):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:241
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:241
         tink_core__Callback_Callback_Impl_.invoke(cb,self.value.get())
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:242
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:242
         return None
 
     def eager(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:246
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:246
         return self
 
     def gather(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:249
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:249
         return self
 
 tink_core__Future_SyncFuture._hx_class = tink_core__Future_SyncFuture
@@ -4797,45 +5746,45 @@ class tink_core__Future_Future_Impl_:
 
     @staticmethod
     def _new(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:12
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:12
         this1 = tink_core__Future_SimpleFuture(f)
         return this1
 
     @staticmethod
     def first(this1,other):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:19
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:19
         ret = tink_core_FutureTrigger()
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:20
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:20
         l1 = this1.handle(ret.trigger)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:21
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:21
         l2 = other.handle(ret.trigger)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:22
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:22
         ret1 = ret
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:23
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:23
         if (l1 is not None):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:24
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:24
             this2 = l1
             def _hx_local_0(_):
                 this2.dissolve()
             ret1.handle(_hx_local_0)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:25
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:25
         if (l2 is not None):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:26
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:26
             this3 = l2
             def _hx_local_1(_1):
                 this3.dissolve()
             ret1.handle(_hx_local_1)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:27
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:27
         return ret1
 
     @staticmethod
     def map(this1,f,gather = True):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:34
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:34
         if (gather is None):
             gather = True
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:35
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:35
         ret = this1.map(f)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:37
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:37
         if gather:
             return ret.gather()
         else:
@@ -4843,12 +5792,12 @@ class tink_core__Future_Future_Impl_:
 
     @staticmethod
     def flatMap(this1,next,gather = True):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:45
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:45
         if (gather is None):
             gather = True
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:46
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:46
         ret = this1.flatMap(next)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:48
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:48
         if gather:
             return ret.gather()
         else:
@@ -4856,29 +5805,29 @@ class tink_core__Future_Future_Impl_:
 
     @staticmethod
     def next(this1,n):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:57
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:57
         def _hx_local_1():
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:57
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:57
             def _hx_local_0(v):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:57
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:57
                 return n(v)
             return this1.flatMap(_hx_local_0)
         return _hx_local_1()
 
     @staticmethod
     def merge(this1,other,merger,gather = True):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:63
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:63
         if (gather is None):
             gather = True
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:64
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:64
         def _hx_local_1(t):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:64
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:64
             def _hx_local_0(a):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:64
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:64
                 return merger(t,a)
             ret1 = other.map(_hx_local_0)
             return ret1
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:63
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:63
         ret = this1.flatMap(_hx_local_1)
         if gather:
             return ret.gather()
@@ -4887,47 +5836,47 @@ class tink_core__Future_Future_Impl_:
 
     @staticmethod
     def flatten(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:71
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:71
         return tink_core__Future_NestedFuture(f)
 
     @staticmethod
     def asPromise(s):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:85
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:85
         return s
 
     @staticmethod
     def ofMany(futures,gather = True):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:90
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:90
         if (gather is None):
             gather = True
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:91
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:91
         ret = tink_core__Future_SyncFuture(tink_core__Lazy_LazyConst([]))
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:92
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:92
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:92
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:92
         _g = 0
         while (_g < len(futures)):
             f = [(futures[_g] if _g >= 0 and _g < len(futures) else None)]
             _g = (_g + 1)
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:94
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:94
             def _hx_local_4(f1):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:94
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:94
                 def _hx_local_1(results):
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:96
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:96
                     def _hx_local_3():
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:96
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:96
                         def _hx_local_2(result):
-                            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:97
+                            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:97
                             return (results + [result])
                         return _hx_local_2
                     ret2 = _hx_local_3()
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:95
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:95
                     ret3 = (f1[0] if 0 < len(f1) else None).map(ret2)
                     return ret3
                 return _hx_local_1
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:93
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:93
             ret1 = ret.flatMap(_hx_local_4(f))
             ret = ret1
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:103
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:103
         if gather:
             return ret.gather()
         else:
@@ -4935,55 +5884,55 @@ class tink_core__Future_Future_Impl_:
 
     @staticmethod
     def fromMany(futures):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:108
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:108
         return tink_core__Future_Future_Impl_.ofMany(futures)
 
     @staticmethod
     def lazy(l):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:112
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:112
         return tink_core__Future_SyncFuture(l)
 
     @staticmethod
     def sync(v):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:119
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:119
         return tink_core__Future_SyncFuture(tink_core__Lazy_LazyConst(v))
 
     @staticmethod
     def async(f,lazy = False):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:126
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:126
         if (lazy is None):
             lazy = False
         if lazy:
             return tink_core__Future_LazyTrigger(f)
         else:
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:129
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:129
             op = tink_core_FutureTrigger()
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:130
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:130
             wrapped = f
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:131
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:131
             tink_core__Callback_Callback_Impl_.invoke(wrapped,op.trigger)
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:132
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:132
             return op
 
     @staticmethod
     def _hx_or(a,b):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:139
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:139
         return tink_core__Future_Future_Impl_.first(a,b)
 
     @staticmethod
     def either(a,b):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:145
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:145
         ret = a.map(haxe_ds_Either.Left)
         ret1 = b.map(haxe_ds_Either.Right)
         return tink_core__Future_Future_Impl_.first(ret,ret1)
 
     @staticmethod
     def _hx_and(a,b):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:151
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:151
         def _hx_local_1():
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:151
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:151
             def _hx_local_0(a1,b1):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:151
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:151
                 this1 = tink_core_MPair(a1,b1)
                 return this1
             return tink_core__Future_Future_Impl_.merge(a,b,_hx_local_0)
@@ -4991,17 +5940,17 @@ class tink_core__Future_Future_Impl_:
 
     @staticmethod
     def _tryFailingFlatMap(f,_hx_map):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:154
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:154
         def _hx_local_0(o):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:154
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:154
             o1 = o.index
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:155
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:155
             if (o1 == 0):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:155
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:155
                 d = o.params[0]
                 return _hx_map(d)
             elif (o1 == 1):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:156
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:156
                 f1 = o.params[0]
                 return tink_core__Future_SyncFuture(tink_core__Lazy_LazyConst(tink_core_Outcome.Failure(f1)))
             else:
@@ -5011,18 +5960,18 @@ class tink_core__Future_Future_Impl_:
 
     @staticmethod
     def _tryFlatMap(f,_hx_map):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:160
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:160
         def _hx_local_0(o):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:160
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:160
             o1 = o.index
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:161
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:161
             if (o1 == 0):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:161
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:161
                 d = o.params[0]
                 ret1 = _hx_map(d).map(tink_core_Outcome.Success)
                 return ret1.gather()
             elif (o1 == 1):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:162
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:162
                 f1 = o.params[0]
                 return tink_core__Future_SyncFuture(tink_core__Lazy_LazyConst(tink_core_Outcome.Failure(f1)))
             else:
@@ -5032,37 +5981,37 @@ class tink_core__Future_Future_Impl_:
 
     @staticmethod
     def _tryFailingMap(f,_hx_map):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:166
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:166
         def _hx_local_0(o):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:166
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:166
             return tink_core_OutcomeTools.flatMap(o,tink_core__Outcome_OutcomeMapper_Impl_.withSameError(_hx_map))
         ret = f.map(_hx_local_0)
         return ret.gather()
 
     @staticmethod
     def _tryMap(f,_hx_map):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:169
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:169
         def _hx_local_0(o):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:169
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:169
             return tink_core_OutcomeTools.map(o,_hx_map)
         ret = f.map(_hx_local_0)
         return ret.gather()
 
     @staticmethod
     def _flatMap(f,_hx_map):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:172
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:172
         ret = f.flatMap(_hx_map)
         return ret.gather()
 
     @staticmethod
     def _map(f,_hx_map):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:175
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:175
         ret = f.map(_hx_map)
         return ret.gather()
 
     @staticmethod
     def trigger():
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:181
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:181
         return tink_core_FutureTrigger()
 tink_core__Future_Future_Impl_._hx_class = tink_core__Future_Future_Impl_
 
@@ -5074,7 +6023,7 @@ class tink_core__Future_Futuristic_Impl_:
 
     @staticmethod
     def ofAny(v):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:188
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:188
         return tink_core__Future_SyncFuture(tink_core__Lazy_LazyConst(v))
 tink_core__Future_Futuristic_Impl_._hx_class = tink_core__Future_Futuristic_Impl_
 
@@ -5086,37 +6035,37 @@ class tink_core__Future_SimpleFuture:
     _hx_methods = ["handle", "map", "flatMap", "gather", "eager"]
 
     def __init__(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:255
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:255
         self.gathered = None
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:258
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:258
         self.f = f
 
     def handle(self,callback):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:261
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:261
         return self.f(callback)
 
     def map(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:263
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:263
         _gthis = self
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:264
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:264
         def _hx_local_3():
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:265
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:265
             def _hx_local_2(cb):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:265
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:265
                 def _hx_local_1():
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:265
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:265
                     def _hx_local_0(v):
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:265
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:265
                         tmp = f(v)
                         tink_core__Callback_Callback_Impl_.invoke(cb,tmp)
                     return _gthis.f(_hx_local_0)
                 return _hx_local_1()
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:264
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:264
             return tink_core__Future_SimpleFuture(_hx_local_2)
         return _hx_local_3()
 
     def flatMap(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:269
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:269
         f1 = f
         _gthis = self
         def _hx_local_3():
@@ -5131,17 +6080,17 @@ class tink_core__Future_SimpleFuture:
         return _hx_local_3()
 
     def gather(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:272
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:272
         return tink_core_FutureTrigger.gatherFuture(self)
 
     def eager(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:275
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:275
         ret = tink_core_FutureTrigger.gatherFuture(self)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:276
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:276
         def _hx_local_0():
             pass
         ret.handle(tink_core__Callback_Callback_Impl_.fromNiladic(_hx_local_0))
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:277
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:277
         return ret
 
 tink_core__Future_SimpleFuture._hx_class = tink_core__Future_SimpleFuture
@@ -5154,54 +6103,54 @@ class tink_core__Future_NestedFuture:
     _hx_methods = ["map", "flatMap", "gather", "eager", "handle"]
 
     def __init__(self,outer):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:285
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:285
         self.outer = outer
 
     def map(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:288
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:288
         def _hx_local_0(inner):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:288
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:288
             ret1 = inner.map(f)
             return ret1.gather()
         ret = self.outer.flatMap(_hx_local_0)
         return ret.gather()
 
     def flatMap(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:291
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:291
         def _hx_local_0(inner):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:291
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:291
             ret1 = inner.flatMap(f)
             return ret1.gather()
         ret = self.outer.flatMap(_hx_local_0)
         return ret.gather()
 
     def gather(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:294
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:294
         return tink_core_FutureTrigger.gatherFuture(self)
 
     def eager(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:297
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:297
         ret = tink_core_FutureTrigger.gatherFuture(self)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:298
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:298
         def _hx_local_0():
             pass
         ret.handle(tink_core__Callback_Callback_Impl_.fromNiladic(_hx_local_0))
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:299
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:299
         return ret
 
     def handle(self,cb):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:303
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:303
         ret = None
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:305
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:305
         def _hx_local_1(inner):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:305
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:305
             nonlocal ret
             def _hx_local_0(result):
                 tink_core__Callback_Callback_Impl_.invoke(cb,result)
             ret = inner.handle(_hx_local_0)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:304
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:304
         ret = self.outer.handle(_hx_local_1)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:307
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:307
         return ret
 
 tink_core__Future_NestedFuture._hx_class = tink_core__Future_NestedFuture
@@ -5215,114 +6164,114 @@ class tink_core_FutureTrigger:
     _hx_statics = ["gatherFuture"]
 
     def __init__(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:312
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:312
         self.result = None
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:316
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:316
         this1 = []
         self.list = this1
 
     def handle(self,callback):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:319
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:319
         _g = self.list
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:320
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:320
         if (_g is None):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:321
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:321
             tink_core__Callback_Callback_Impl_.invoke(callback,self.result)
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:322
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:322
             return None
         else:
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:323
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:323
             v = _g
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:324
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:324
             return tink_core__Callback_CallbackList_Impl_.add(v,callback)
 
     def map(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:328
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:328
         _g = self.list
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:329
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:329
         if (_g is None):
             return tink_core__Future_SyncFuture(tink_core__Lazy_LazyConst(f(self.result)))
         else:
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:330
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:330
             v = _g
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:331
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:331
             ret = tink_core_FutureTrigger()
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:332
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:332
             def _hx_local_0(v1):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:332
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:332
                 tmp = f(v1)
                 ret.trigger(tmp)
             tink_core__Callback_CallbackList_Impl_.add(self.list,_hx_local_0)
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:333
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:333
             return ret
 
     def flatMap(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:337
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:337
         _g = self.list
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:338
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:338
         if (_g is None):
             return f(self.result)
         else:
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:339
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:339
             v = _g
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:340
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:340
             ret = tink_core_FutureTrigger()
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:341
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:341
             def _hx_local_0(v1):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:341
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:341
                 f(v1).handle(ret.trigger)
             tink_core__Callback_CallbackList_Impl_.add(self.list,_hx_local_0)
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:342
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:342
             return ret
 
     def gather(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:346
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:346
         return self
 
     def eager(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:349
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:349
         return self
 
     def asFuture(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:352
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:352
         return self
 
     def trigger(self,result):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:371
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:371
         if (self.list is None):
             return False
         else:
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:373
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:373
             _hx_list = self.list
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:374
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:374
             self.list = None
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:375
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:375
             self.result = result
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:376
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:376
             tink_core__Callback_CallbackList_Impl_.invoke(_hx_list,result)
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:377
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:377
             tink_core__Callback_CallbackList_Impl_.clear(_hx_list)
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:378
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:378
             return True
 
     @staticmethod
     def gatherFuture(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:355
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:355
         op = None
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:356
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:356
         def _hx_local_0(cb):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:356
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:356
             nonlocal op
             nonlocal f
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:357
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:357
             if (op is None):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:358
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:358
                 op = tink_core_FutureTrigger()
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:359
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:359
                 f.handle(op.trigger)
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:360
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:360
                 f = None
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:362
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:362
             return op.handle(cb)
         this1 = tink_core__Future_SimpleFuture(_hx_local_0)
         return this1
@@ -5340,71 +6289,71 @@ class tink_core__Future_LazyTrigger(tink_core_FutureTrigger):
 
 
     def __init__(self,op):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:387
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:387
         if (op is None):
             raise _HxException("invalid argument")
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:389
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:389
         self.op = op
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:390
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:390
         super().__init__()
 
     def eager(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:394
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:394
         if (self.op is not None):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:395
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:395
             op = self.op
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:396
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:396
             self.op = None
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:397
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:397
             tink_core__Callback_Callback_Impl_.invoke(op,self.trigger)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:399
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:399
         return self
 
     def map(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:402
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:402
         _gthis = self
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:404
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:404
         if (self.op is None):
             return super().map(f)
         else:
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:405
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:405
             def _hx_local_2():
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:406
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:406
                 def _hx_local_1(cb):
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:406
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:406
                     def _hx_local_0(v):
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:406
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:406
                         tmp = f(v)
                         cb(tmp)
                     _gthis.handle(_hx_local_0)
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:405
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:405
                 return tink_core__Future_Future_Impl_.async(_hx_local_1,True)
             return _hx_local_2()
 
     def flatMap(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:409
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:409
         _gthis = self
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:411
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:411
         if (self.op is None):
             return super().flatMap(f)
         else:
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:412
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:412
             def _hx_local_2():
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:413
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:413
                 def _hx_local_1(cb):
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:413
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:413
                     def _hx_local_0(v):
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:413
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:413
                         f(v).handle(cb)
                     _gthis.handle(_hx_local_0)
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:412
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:412
                 return tink_core__Future_Future_Impl_.async(_hx_local_1,True)
             return _hx_local_2()
 
     def handle(self,cb):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:417
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:417
         self.eager()
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Future.hx:418
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Future.hx:418
         return super().handle(cb)
 
 tink_core__Future_LazyTrigger._hx_class = tink_core__Future_LazyTrigger
@@ -5417,27 +6366,27 @@ class tink_core__Lazy_Lazy_Impl_:
 
     @staticmethod
     def get(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:6
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:6
         return this1.get()
 
     @staticmethod
     def ofFunc(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:9
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:9
         return tink_core__Lazy_LazyFunc(f)
 
     @staticmethod
     def map(this1,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:12
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:12
         return this1.map(f)
 
     @staticmethod
     def flatMap(this1,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:15
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:15
         return this1.flatMap(f)
 
     @staticmethod
     def ofConst(c):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:18
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:18
         return tink_core__Lazy_LazyConst(c)
 tink_core__Lazy_Lazy_Impl_._hx_class = tink_core__Lazy_Lazy_Impl_
 
@@ -5449,51 +6398,51 @@ class tink_core__Lazy_LazyFunc:
     _hx_methods = ["get", "map", "flatMap"]
 
     def __init__(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:46
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:46
         self.result = None
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:47
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:47
         self.busy = False
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:49
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:49
         self.f = f
 
     def get(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:52
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:52
         if self.busy:
             raise _HxException(tink_core_TypedError(None,"circular lazyness",_hx_AnonObject({'fileName': "Lazy.hx", 'lineNumber': 52, 'className': "tink.core._Lazy.LazyFunc", 'methodName': "get"})))
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:53
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:53
         if (self.f is not None):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:54
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:54
             self.busy = True
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:55
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:55
             self.result = self.f()
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:56
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:56
             self.f = None
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:57
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:57
             self.busy = False
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:59
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:59
         return self.result
 
     def map(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:62
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:62
         _gthis = self
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:63
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:63
         def _hx_local_1():
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:63
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:63
             def _hx_local_0():
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:63
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:63
                 tmp = _gthis.get()
                 return f(tmp)
             return tink_core__Lazy_LazyFunc(_hx_local_0)
         return _hx_local_1()
 
     def flatMap(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:65
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:65
         _gthis = self
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:66
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:66
         def _hx_local_1():
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:66
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:66
             def _hx_local_0():
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Lazy.hx:66
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Lazy.hx:66
                 this1 = _gthis.get()
                 return f(this1).get()
             return tink_core__Lazy_LazyFunc(_hx_local_0)
@@ -5508,9 +6457,9 @@ class tink_core_NamedWith:
     _hx_fields = ["name", "value"]
 
     def __init__(self,name,value):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Named.hx:11
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Named.hx:11
         self.name = name
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Named.hx:12
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Named.hx:12
         self.value = value
 
 tink_core_NamedWith._hx_class = tink_core_NamedWith
@@ -5523,20 +6472,20 @@ class tink_core_OptionTools:
 
     @staticmethod
     def force(o,pos = None):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:11
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:11
         if (o.index == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:12
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:12
             v = o.params[0]
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:13
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:13
             return v
         else:
             raise _HxException(tink_core_TypedError(404,"Some value expected but none found",pos))
 
     @staticmethod
     def _hx_or(o,l):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:22
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:22
         if (o.index == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:23
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:23
             v = o.params[0]
             return v
         else:
@@ -5544,9 +6493,9 @@ class tink_core_OptionTools:
 
     @staticmethod
     def orNull(o):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:31
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:31
         if (o.index == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:32
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:32
             v = o.params[0]
             return v
         else:
@@ -5554,9 +6503,9 @@ class tink_core_OptionTools:
 
     @staticmethod
     def filter(o,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:40
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:40
         if (o.index == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:41
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:41
             _hx_tmp = f(o.params[0])
             if (_hx_tmp == False):
                 return haxe_ds_Option._hx_None
@@ -5567,9 +6516,9 @@ class tink_core_OptionTools:
 
     @staticmethod
     def satisfies(o,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:49
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:49
         if (o.index == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:50
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:50
             v = o.params[0]
             return f(v)
         else:
@@ -5577,9 +6526,9 @@ class tink_core_OptionTools:
 
     @staticmethod
     def equals(o,v):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:58
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:58
         if (o.index == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:58
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:58
             v1 = o.params[0]
             return (v1 == v)
         else:
@@ -5587,9 +6536,9 @@ class tink_core_OptionTools:
 
     @staticmethod
     def map(o,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:65
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:65
         if (o.index == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:66
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:66
             v = o.params[0]
             return haxe_ds_Option.Some(f(v))
         else:
@@ -5597,9 +6546,9 @@ class tink_core_OptionTools:
 
     @staticmethod
     def flatMap(o,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:75
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:75
         if (o.index == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:76
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:76
             v = o.params[0]
             return f(v)
         else:
@@ -5607,14 +6556,14 @@ class tink_core_OptionTools:
 
     @staticmethod
     def iterator(o):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:85
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:85
         return tink_core_OptionIter(o)
 
     @staticmethod
     def toArray(o):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:92
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:92
         if (o.index == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:93
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:93
             v = o.params[0]
             return [v]
         else:
@@ -5629,26 +6578,26 @@ class tink_core_OptionIter:
     _hx_methods = ["hasNext", "next"]
 
     def __init__(self,o):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:100
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:100
         self.value = None
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:101
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:101
         self.alive = True
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:104
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:104
         if (o.index == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:105
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:105
             v = o.params[0]
             self.value = v
         else:
             self.alive = False
 
     def hasNext(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:110
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:110
         return self.alive
 
     def next(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:113
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:113
         self.alive = False
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Option.hx:115
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Option.hx:115
         return self.value
 
 tink_core_OptionIter._hx_class = tink_core_OptionIter
@@ -5674,24 +6623,24 @@ class tink_core_OutcomeTools:
 
     @staticmethod
     def sure(outcome):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:18
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:18
         outcome1 = outcome.index
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:19
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:19
         if (outcome1 == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:19
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:19
             data = outcome.params[0]
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:20
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:20
             return data
         elif (outcome1 == 1):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:21
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:21
             failure = outcome.params[0]
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:22
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:22
             _g = tink_core_TypedError.asError(failure)
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:23
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:23
             if (_g is None):
                 raise _HxException(failure)
             else:
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:24
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:24
                 e = _g
                 return e.throwSelf()
         else:
@@ -5699,11 +6648,11 @@ class tink_core_OutcomeTools:
 
     @staticmethod
     def toOption(outcome):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:33
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:33
         outcome1 = outcome.index
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:34
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:34
         if (outcome1 == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:34
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:34
             data = outcome.params[0]
             return haxe_ds_Option.Some(data)
         elif (outcome1 == 1):
@@ -5713,13 +6662,13 @@ class tink_core_OutcomeTools:
 
     @staticmethod
     def toOutcome(option,pos = None):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:43
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:43
         option1 = option.index
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:44
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:44
         if (option1 == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:44
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:44
             value = option.params[0]
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:45
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:45
             return tink_core_Outcome.Success(value)
         elif (option1 == 1):
             return tink_core_Outcome.Failure(tink_core_TypedError(404,((("Some value expected but none found in " + HxOverrides.stringOrNull(pos.fileName)) + "@line ") + Std.string(pos.lineNumber)),_hx_AnonObject({'fileName': "Outcome.hx", 'lineNumber': 47, 'className': "tink.core.OutcomeTools", 'methodName': "toOutcome"})))
@@ -5728,11 +6677,11 @@ class tink_core_OutcomeTools:
 
     @staticmethod
     def orNull(outcome):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:55
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:55
         outcome1 = outcome.index
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:56
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:56
         if (outcome1 == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:56
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:56
             data = outcome.params[0]
             return data
         elif (outcome1 == 1):
@@ -5742,11 +6691,11 @@ class tink_core_OutcomeTools:
 
     @staticmethod
     def orUse(outcome,fallback):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:65
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:65
         outcome1 = outcome.index
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:66
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:66
         if (outcome1 == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:66
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:66
             data = outcome.params[0]
             return data
         elif (outcome1 == 1):
@@ -5756,9 +6705,9 @@ class tink_core_OutcomeTools:
 
     @staticmethod
     def orTry(outcome,fallback):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:75
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:75
         outcome1 = outcome.index
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:76
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:76
         if (outcome1 == 0):
             return outcome
         elif (outcome1 == 1):
@@ -5768,11 +6717,11 @@ class tink_core_OutcomeTools:
 
     @staticmethod
     def equals(outcome,to):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:84
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:84
         outcome1 = outcome.index
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:85
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:85
         if (outcome1 == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:85
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:85
             data = outcome.params[0]
             return (data == to)
         elif (outcome1 == 1):
@@ -5782,25 +6731,25 @@ class tink_core_OutcomeTools:
 
     @staticmethod
     def map(outcome,transform):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:94
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:94
         outcome1 = outcome.index
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:95
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:95
         if (outcome1 == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:95
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:95
             a = outcome.params[0]
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:96
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:96
             return tink_core_Outcome.Success(transform(a))
         elif (outcome1 == 1):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:97
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:97
             f = outcome.params[0]
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:98
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:98
             return tink_core_Outcome.Failure(f)
         else:
             pass
 
     @staticmethod
     def isSuccess(outcome):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:106
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:106
         if (outcome.index == 0):
             return True
         else:
@@ -5808,30 +6757,30 @@ class tink_core_OutcomeTools:
 
     @staticmethod
     def flatMap(o,mapper):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:117
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:117
         return tink_core__Outcome_OutcomeMapper_Impl_.apply(mapper,o)
 
     @staticmethod
     def swap(outcome,v):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:125
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:125
         outcome1 = outcome.index
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:126
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:126
         if (outcome1 == 0):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:126
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:126
             a = outcome.params[0]
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:127
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:127
             return tink_core_Outcome.Success(v)
         elif (outcome1 == 1):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:128
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:128
             f = outcome.params[0]
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:129
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:129
             return tink_core_Outcome.Failure(f)
         else:
             pass
 
     @staticmethod
     def attempt(f,report):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:138
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:138
         try:
             return tink_core_Outcome.Success(f())
         except Exception as _hx_e:
@@ -5841,23 +6790,23 @@ class tink_core_OutcomeTools:
 
     @staticmethod
     def flatten(o):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:143
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:143
         o1 = o.index
         if (o1 == 0):
             tmp = o.params[0].index
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:144
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:144
             if (tmp == 0):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:144
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:144
                 d = o.params[0].params[0]
                 return tink_core_Outcome.Success(d)
             elif (tmp == 1):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:145
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:145
                 f = o.params[0].params[0]
                 return tink_core_Outcome.Failure(f)
             else:
                 pass
         elif (o1 == 1):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:145
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:145
             f1 = o.params[0]
             return tink_core_Outcome.Failure(f1)
         else:
@@ -5872,71 +6821,71 @@ class tink_core__Outcome_OutcomeMapper_Impl_:
 
     @staticmethod
     def _new(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:150
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:150
         this1 = _hx_AnonObject({'f': f})
         return this1
 
     @staticmethod
     def apply(this1,o):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:152
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:152
         return this1.f(o)
 
     @staticmethod
     def withSameError(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:155
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:155
         def _hx_local_1():
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:156
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:156
             def _hx_local_0(o):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:156
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:156
                 o1 = o.index
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:157
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:157
                 if (o1 == 0):
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:157
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:157
                     d = o.params[0]
                     return f(d)
                 elif (o1 == 1):
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:158
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:158
                     f1 = o.params[0]
                     return tink_core_Outcome.Failure(f1)
                 else:
                     pass
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:155
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:155
             return tink_core__Outcome_OutcomeMapper_Impl_._new(_hx_local_0)
         return _hx_local_1()
 
     @staticmethod
     def withEitherError(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:164
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:164
         def _hx_local_1():
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:165
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:165
             def _hx_local_0(o):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:165
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:165
                 o1 = o.index
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:166
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:166
                 if (o1 == 0):
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:166
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:166
                     d = o.params[0]
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:167
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:167
                     _g = f(d)
                     _g1 = _g.index
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:168
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:168
                     if (_g1 == 0):
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:168
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:168
                         d1 = _g.params[0]
                         return tink_core_Outcome.Success(d1)
                     elif (_g1 == 1):
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:169
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:169
                         f1 = _g.params[0]
                         return tink_core_Outcome.Failure(haxe_ds_Either.Right(f1))
                     else:
                         pass
                 elif (o1 == 1):
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:171
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:171
                     f2 = o.params[0]
                     return tink_core_Outcome.Failure(haxe_ds_Either.Left(f2))
                 else:
                     pass
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Outcome.hx:164
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Outcome.hx:164
             return tink_core__Outcome_OutcomeMapper_Impl_._new(_hx_local_0)
         return _hx_local_1()
 tink_core__Outcome_OutcomeMapper_Impl_._hx_class = tink_core__Outcome_OutcomeMapper_Impl_
@@ -5951,33 +6900,33 @@ class tink_core__Pair_Pair_Impl_:
 
     @staticmethod
     def _new(a,b):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Pair.hx:8
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Pair.hx:8
         this1 = tink_core_MPair(a,b)
         return this1
 
     @staticmethod
     def get_a(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Pair.hx:10
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Pair.hx:10
         return this1.a
 
     @staticmethod
     def get_b(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Pair.hx:11
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Pair.hx:11
         return this1.b
 
     @staticmethod
     def toBool(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Pair.hx:14
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Pair.hx:14
         return (this1 is not None)
 
     @staticmethod
     def isNil(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Pair.hx:17
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Pair.hx:17
         return (this1 is None)
 
     @staticmethod
     def nil():
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Pair.hx:20
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Pair.hx:20
         return None
 tink_core__Pair_Pair_Impl_._hx_class = tink_core__Pair_Pair_Impl_
 
@@ -5988,9 +6937,9 @@ class tink_core_MPair:
     _hx_fields = ["a", "b"]
 
     def __init__(self,a,b):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Pair.hx:27
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Pair.hx:27
         self.a = a
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Pair.hx:28
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Pair.hx:28
         self.b = b
 
 tink_core_MPair._hx_class = tink_core_MPair
@@ -5999,38 +6948,38 @@ tink_core_MPair._hx_class = tink_core_MPair
 class tink_core__Promise_Promise_Impl_:
     _hx_class_name = "tink.core._Promise.Promise_Impl_"
     __slots__ = ()
-    _hx_statics = ["NULL", "NOISE", "NEVER", "eager", "map", "flatMap", "tryRecover", "recover", "mapError", "handle", "noise", "isSuccess", "next", "swap", "swapError", "merge", "and", "ofSpecific", "ofFuture", "ofOutcome", "ofError", "ofData", "lazy", "inParallel", "inSequence", "lift"]
+    _hx_statics = ["NULL", "NOISE", "NEVER", "eager", "map", "flatMap", "tryRecover", "recover", "mapError", "handle", "noise", "isSuccess", "next", "swap", "swapError", "merge", "and", "iterate", "ofSpecific", "ofFuture", "ofOutcome", "ofError", "ofData", "lazy", "inParallel", "inSequence", "cache", "lift"]
 
     @staticmethod
     def eager(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:12
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:12
         return this1.eager()
 
     @staticmethod
     def map(this1,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:15
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:15
         ret = this1.map(f)
         return ret.gather()
 
     @staticmethod
     def flatMap(this1,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:18
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:18
         ret = this1.flatMap(f)
         return ret.gather()
 
     @staticmethod
     def tryRecover(this1,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:21
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:21
         def _hx_local_0(o):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:21
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:21
             o1 = o.index
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:22
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:22
             if (o1 == 0):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:22
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:22
                 d = o.params[0]
                 return tink_core__Future_SyncFuture(tink_core__Lazy_LazyConst(o))
             elif (o1 == 1):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:23
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:23
                 e = o.params[0]
                 return f(e)
             else:
@@ -6040,17 +6989,17 @@ class tink_core__Promise_Promise_Impl_:
 
     @staticmethod
     def recover(this1,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:27
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:27
         def _hx_local_0(o):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:27
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:27
             o1 = o.index
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:28
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:28
             if (o1 == 0):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:28
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:28
                 d = o.params[0]
                 return tink_core__Future_SyncFuture(tink_core__Lazy_LazyConst(d))
             elif (o1 == 1):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:29
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:29
                 e = o.params[0]
                 return f(e)
             else:
@@ -6060,15 +7009,15 @@ class tink_core__Promise_Promise_Impl_:
 
     @staticmethod
     def mapError(this1,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:33
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:33
         def _hx_local_0(o):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:33
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:33
             o1 = o.index
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:34
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:34
             if (o1 == 0):
                 return o
             elif (o1 == 1):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:35
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:35
                 e = o.params[0]
                 return tink_core_Outcome.Failure(f(e))
             else:
@@ -6078,43 +7027,43 @@ class tink_core__Promise_Promise_Impl_:
 
     @staticmethod
     def handle(this1,cb):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:39
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:39
         return this1.handle(cb)
 
     @staticmethod
     def noise(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:42
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:42
         def _hx_local_1():
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:42
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:42
             def _hx_local_0(v):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:42
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:42
                 return tink_core__Promise_Promise_Impl_.ofOutcome(tink_core_Outcome.Success(tink_core_Noise.Noise))
             return tink_core__Promise_Promise_Impl_.next(this1,_hx_local_0)
         return _hx_local_1()
 
     @staticmethod
     def isSuccess(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:45
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:45
         def _hx_local_0(o):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:45
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:45
             return tink_core_OutcomeTools.isSuccess(o)
         ret = this1.map(_hx_local_0)
         return ret.gather()
 
     @staticmethod
     def next(this1,f,gather = True):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:48
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:48
         if (gather is None):
             gather = True
         def _hx_local_0(o):
             o1 = o.index
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:49
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:49
             if (o1 == 0):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:49
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:49
                 d = o.params[0]
                 return f(d)
             elif (o1 == 1):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:50
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:50
                 f1 = o.params[0]
                 return tink_core__Future_SyncFuture(tink_core__Lazy_LazyConst(tink_core_Outcome.Failure(f1)))
             else:
@@ -6127,29 +7076,29 @@ class tink_core__Promise_Promise_Impl_:
 
     @staticmethod
     def swap(this1,v):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:54
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:54
         def _hx_local_1():
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:54
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:54
             def _hx_local_0(_):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:54
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:54
                 return v
             return tink_core__Future_Future_Impl_._tryMap(this1,_hx_local_0)
         return _hx_local_1()
 
     @staticmethod
     def swapError(this1,e):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:57
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:57
         def _hx_local_1():
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:57
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:57
             def _hx_local_0(_):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:57
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:57
                 return e
             return tink_core__Promise_Promise_Impl_.mapError(this1,_hx_local_0)
         return _hx_local_1()
 
     @staticmethod
     def merge(this1,other,merger,gather = True):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:60
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:60
         if (gather is None):
             gather = True
         def _hx_local_3():
@@ -6164,125 +7113,187 @@ class tink_core__Promise_Promise_Impl_:
 
     @staticmethod
     def _hx_and(a,b):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:63
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:63
         def _hx_local_1():
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:63
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:63
             def _hx_local_0(a1,b1):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:63
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:63
                 this1 = tink_core_MPair(a1,b1)
                 return tink_core__Promise_Promise_Impl_.ofOutcome(tink_core_Outcome.Success(this1))
             return tink_core__Promise_Promise_Impl_.merge(a,b,_hx_local_0)
         return _hx_local_1()
 
     @staticmethod
+    def iterate(promises,_hx_yield,_hx_finally,lazy = None):
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:67
+        def _hx_local_4():
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:67
+            def _hx_local_3(cb):
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:68
+                _hx_iter = HxOverrides.iterator(promises)
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:69
+                next = None
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:70
+                def _hx_local_2():
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:70
+                    if _hx_iter.hasNext():
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:71
+                        def _hx_local_1(o):
+                            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:71
+                            o1 = o.index
+                            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:72
+                            if (o1 == 0):
+                                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:72
+                                v = o.params[0]
+                                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:73
+                                def _hx_local_0(o2):
+                                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:73
+                                    o3 = o2.index
+                                    if (o3 == 0):
+                                        next1 = o2.params[0].index
+                                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:74
+                                        if (next1 == 0):
+                                            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:74
+                                            ret = o2.params[0].params[0]
+                                            cb(tink_core_Outcome.Success(ret))
+                                        elif (next1 == 1):
+                                            next()
+                                        else:
+                                            pass
+                                    elif (o3 == 1):
+                                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:76
+                                        e = o2.params[0]
+                                        cb(tink_core_Outcome.Failure(e))
+                                    else:
+                                        pass
+                                _hx_yield(v).handle(_hx_local_0)
+                            elif (o1 == 1):
+                                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:78
+                                e1 = o.params[0]
+                                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:79
+                                cb(tink_core_Outcome.Failure(e1))
+                            else:
+                                pass
+                        _hx_iter.next().handle(_hx_local_1)
+                    else:
+                        _hx_finally.handle(cb)
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:69
+                next = _hx_local_2
+                next2 = next
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:84
+                next2()
+            return tink_core__Future_Future_Impl_.async(_hx_local_3,lazy)
+        return _hx_local_4()
+
+    @staticmethod
     def ofSpecific(s):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:71
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:94
         return s
 
     @staticmethod
     def ofFuture(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:74
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:97
         ret = f.map(tink_core_Outcome.Success)
         return ret.gather()
 
     @staticmethod
     def ofOutcome(o):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:77
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:100
         return tink_core__Future_SyncFuture(tink_core__Lazy_LazyConst(o))
 
     @staticmethod
     def ofError(e):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:80
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:103
         return tink_core__Promise_Promise_Impl_.ofOutcome(tink_core_Outcome.Failure(e))
 
     @staticmethod
     def ofData(d):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:83
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:106
         return tink_core__Promise_Promise_Impl_.ofOutcome(tink_core_Outcome.Success(d))
 
     @staticmethod
     def lazy(p):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:86
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:109
         def _hx_local_1():
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:86
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:109
             def _hx_local_0(cb):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:86
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:109
                 p.get().handle(cb)
             return tink_core__Future_Future_Impl_.async(_hx_local_0,True)
         return _hx_local_1()
 
     @staticmethod
     def inParallel(a,lazy = None):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:90
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:113
         if (len(a) == 0):
             return tink_core__Future_SyncFuture(tink_core__Lazy_LazyConst(tink_core_Outcome.Success([])))
         else:
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:91
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:114
             def _hx_local_8():
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:91
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:114
                 def _hx_local_7(cb):
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:92
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:115
                     result = []
                     pending = len(a)
                     links = None
                     sync = False
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:97
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:120
                     def _hx_local_0(o):
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:97
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:120
                         nonlocal sync
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:98
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:121
                         if (links is None):
                             sync = True
                         elif (links is not None):
                             links.dissolve()
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:100
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:123
                         cb(o)
                     done = _hx_local_0
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:104
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:127
                     def _hx_local_1(e):
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:104
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:127
                         done(tink_core_Outcome.Failure(e))
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:103
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:126
                     fail = _hx_local_1
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:106
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:129
                     def _hx_local_4(index,value):
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:107
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:130
                         python_internal_ArrayImpl._set(result, index, value)
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:108
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:131
                         def _hx_local_3():
-                            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:108
+                            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:131
                             nonlocal pending
                             pending = (pending - 1)
                             return pending
                         if ((_hx_local_3()) == 0):
                             done(tink_core_Outcome.Success(result))
                     _hx_set = _hx_local_4
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:112
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:135
                     linkArray = []
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:114
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:114
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:137
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:137
                     _g1 = 0
                     _g = len(a)
                     while (_g1 < _g):
                         i = _g1
                         _g1 = (_g1 + 1)
                         i1 = [i]
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:115
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:138
                         if sync:
                             break
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:116
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:116
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:139
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:139
                         i2 = (i1[0] if 0 < len(i1) else None)
                         def _hx_local_6(i3):
                             def _hx_local_5(o1):
                                 o2 = o1.index
-                                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:117
+                                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:140
                                 if (o2 == 0):
-                                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:117
+                                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:140
                                     v = o1.params[0]
                                     _hx_set((i3[0] if 0 < len(i3) else None),v)
                                 elif (o2 == 1):
-                                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:118
+                                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:141
                                     e1 = o1.params[0]
                                     fail(e1)
                                 else:
@@ -6291,9 +7302,9 @@ class tink_core__Promise_Promise_Impl_:
                         x = _hx_local_6(i1)
                         x1 = (a[i2] if i2 >= 0 and i2 < len(a) else None).handle(x)
                         linkArray.append(x1)
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:122
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:145
                     links = tink_core__Callback_CallbackLink_Impl_.fromMany(linkArray)
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:124
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:147
                     if sync:
                         if (links is not None):
                             links.dissolve()
@@ -6302,39 +7313,84 @@ class tink_core__Promise_Promise_Impl_:
 
     @staticmethod
     def inSequence(a):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:130
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:153
         loop = None
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:132
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:155
         def _hx_local_4(index):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:132
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:155
             if (index == len(a)):
                 return tink_core__Promise_Promise_Impl_.ofOutcome(tink_core_Outcome.Success([]))
             else:
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:134
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:157
                 def _hx_local_3():
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:135
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:158
                     def _hx_local_2(head):
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:135
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:158
                         def _hx_local_1():
-                            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:136
+                            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:159
                             def _hx_local_0(tail):
-                                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:136
+                                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:159
                                 return tink_core__Promise_Promise_Impl_.ofOutcome(tink_core_Outcome.Success(([head] + tail)))
-                            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:135
+                            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:158
                             return tink_core__Promise_Promise_Impl_.next(loop((index + 1)),_hx_local_0)
                         return _hx_local_1()
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:134
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:157
                     return tink_core__Promise_Promise_Impl_.next((a[index] if index >= 0 and index < len(a) else None),_hx_local_2)
                 return _hx_local_3()
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:130
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:153
         loop = _hx_local_4
         loop1 = loop
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:140
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:163
         return loop1(0)
 
     @staticmethod
+    def cache(gen):
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:167
+        p = None
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:168
+        def _hx_local_0():
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:168
+            nonlocal p
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:169
+            ret = p
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:170
+            if (ret is None):
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:171
+                sync = False
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:172
+                def _hx_local_2(o):
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:173
+                    def _hx_local_1(_):
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:173
+                        nonlocal sync
+                        nonlocal p
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:174
+                        sync = True
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:175
+                        p = None
+                    o.b.handle(_hx_local_1)
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:177
+                    return tink_core__Promise_Promise_Impl_.ofOutcome(tink_core_Outcome.Success(o.a))
+                ret = tink_core__Promise_Promise_Impl_.next(gen(),_hx_local_2)
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:179
+                if (not sync):
+                    p = ret
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:181
+            def _hx_local_3(o1):
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:181
+                nonlocal p
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:182
+                if (not tink_core_OutcomeTools.isSuccess(o1)):
+                    p = None
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:183
+                return o1
+            ret1 = ret.map(_hx_local_3)
+            return ret1.gather()
+        return _hx_local_0
+
+    @staticmethod
     def lift(p):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:145
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:190
         return p
 tink_core__Promise_Promise_Impl_._hx_class = tink_core__Promise_Promise_Impl_
 
@@ -6346,34 +7402,34 @@ class tink_core__Promise_Next_Impl_:
 
     @staticmethod
     def ofSafe(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:152
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:197
         def _hx_local_0(x):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:152
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:197
             return tink_core__Future_SyncFuture(tink_core__Lazy_LazyConst(f(x)))
         return _hx_local_0
 
     @staticmethod
     def ofSync(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:155
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:200
         def _hx_local_0(x):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:155
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:200
             ret = f(x).map(tink_core_Outcome.Success)
             return ret.gather()
         return _hx_local_0
 
     @staticmethod
     def ofSafeSync(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:158
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:203
         def _hx_local_0(x):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:158
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:203
             return tink_core__Promise_Promise_Impl_.ofOutcome(tink_core_Outcome.Success(f(x)))
         return _hx_local_0
 
     @staticmethod
     def _chain(a,b):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:161
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:206
         def _hx_local_0(v):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:161
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:206
             return tink_core__Promise_Promise_Impl_.next(a(v),b)
         return _hx_local_0
 tink_core__Promise_Next_Impl_._hx_class = tink_core__Promise_Next_Impl_
@@ -6386,9 +7442,9 @@ class tink_core__Promise_Recover_Impl_:
 
     @staticmethod
     def ofSync(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:168
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:213
         def _hx_local_0(e):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:168
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:213
             return tink_core__Future_SyncFuture(tink_core__Lazy_LazyConst(f(e)))
         return _hx_local_0
 tink_core__Promise_Recover_Impl_._hx_class = tink_core__Promise_Recover_Impl_
@@ -6401,26 +7457,26 @@ class tink_core__Promise_Combiner_Impl_:
 
     @staticmethod
     def ofSafe(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:175
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:220
         def _hx_local_0(x1,x2):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:175
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:220
             return tink_core__Future_SyncFuture(tink_core__Lazy_LazyConst(f(x1,x2)))
         return _hx_local_0
 
     @staticmethod
     def ofSync(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:178
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:223
         def _hx_local_0(x1,x2):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:178
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:223
             ret = f(x1,x2).map(tink_core_Outcome.Success)
             return ret.gather()
         return _hx_local_0
 
     @staticmethod
     def ofSafeSync(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:181
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:226
         def _hx_local_0(x1,x2):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:181
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:226
             return tink_core__Promise_Promise_Impl_.ofOutcome(tink_core_Outcome.Success(f(x1,x2)))
         return _hx_local_0
 tink_core__Promise_Combiner_Impl_._hx_class = tink_core__Promise_Combiner_Impl_
@@ -6434,7 +7490,7 @@ class tink_core__Ref_Ref_Impl_:
 
     @staticmethod
     def _new():
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Ref.hx:6
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Ref.hx:6
         this1 = None
         this2 = [None]*1
         this1 = this2
@@ -6442,30 +7498,30 @@ class tink_core__Ref_Ref_Impl_:
 
     @staticmethod
     def get_value(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Ref.hx:8
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Ref.hx:8
         return this1[0]
 
     @staticmethod
     def set_value(this1,param):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Ref.hx:9
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Ref.hx:9
         this1[0] = param
         return param
 
     @staticmethod
     def toString(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Ref.hx:11
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Ref.hx:11
         return (("@[" + Std.string(this1[0])) + "]")
 
     @staticmethod
     def to(v):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Ref.hx:14
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Ref.hx:14
         this1 = None
         this2 = [None]*1
         this1 = this2
         ret = this1
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Ref.hx:15
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Ref.hx:15
         ret[0] = v
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Ref.hx:16
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Ref.hx:16
         return ret
 tink_core__Ref_Ref_Impl_._hx_class = tink_core__Ref_Ref_Impl_
 
@@ -6477,29 +7533,29 @@ class tink_core__Signal_Signal_Impl_:
 
     @staticmethod
     def _new(f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:9
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:9
         this1 = tink_core__Signal_SimpleSignal(f)
         return this1
 
     @staticmethod
     def map(this1,f,gather = True):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:15
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:15
         if (gather is None):
             gather = True
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:16
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:16
         def _hx_local_2(cb):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:16
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:16
             def _hx_local_1():
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:16
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:16
                 def _hx_local_0(result):
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:16
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:16
                     this3 = f(result)
                     tink_core__Callback_Callback_Impl_.invoke(cb,this3)
                 return this1.handle(_hx_local_0)
             return _hx_local_1()
         this2 = tink_core__Signal_SimpleSignal(_hx_local_2)
         ret = this2
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:18
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:18
         if gather:
             return tink_core__Signal_Signal_Impl_.gather(ret)
         else:
@@ -6507,22 +7563,22 @@ class tink_core__Signal_Signal_Impl_:
 
     @staticmethod
     def flatMap(this1,f,gather = True):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:26
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:26
         if (gather is None):
             gather = True
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:27
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:27
         def _hx_local_2(cb):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:27
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:27
             def _hx_local_1():
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:27
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:27
                 def _hx_local_0(result):
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:27
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:27
                     f(result).handle(cb)
                 return this1.handle(_hx_local_0)
             return _hx_local_1()
         this2 = tink_core__Signal_SimpleSignal(_hx_local_2)
         ret = this2
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:29
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:29
         if gather:
             return tink_core__Signal_Signal_Impl_.gather(ret)
         else:
@@ -6530,23 +7586,23 @@ class tink_core__Signal_Signal_Impl_:
 
     @staticmethod
     def filter(this1,f,gather = True):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:36
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:36
         if (gather is None):
             gather = True
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:37
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:37
         def _hx_local_2(cb):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:37
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:37
             def _hx_local_1():
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:37
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:37
                 def _hx_local_0(result):
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:37
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:37
                     if f(result):
                         tink_core__Callback_Callback_Impl_.invoke(cb,result)
                 return this1.handle(_hx_local_0)
             return _hx_local_1()
         this2 = tink_core__Signal_SimpleSignal(_hx_local_2)
         ret = this2
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:39
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:39
         if gather:
             return tink_core__Signal_Signal_Impl_.gather(ret)
         else:
@@ -6554,21 +7610,21 @@ class tink_core__Signal_Signal_Impl_:
 
     @staticmethod
     def select(this1,selector,gather = True):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:43
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:43
         if (gather is None):
             gather = True
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:44
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:44
         def _hx_local_2(cb):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:44
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:44
             def _hx_local_1():
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:44
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:44
                 def _hx_local_0(result):
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:44
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:44
                     _g = selector(result)
                     _g1 = _g.index
-                    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:45
+                    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:45
                     if (_g1 == 0):
-                        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:45
+                        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:45
                         v = _g.params[0]
                         tink_core__Callback_Callback_Impl_.invoke(cb,v)
                     elif (_g1 == 1):
@@ -6579,7 +7635,7 @@ class tink_core__Signal_Signal_Impl_:
             return _hx_local_1()
         this2 = tink_core__Signal_SimpleSignal(_hx_local_2)
         ret = this2
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:49
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:49
         if gather:
             return tink_core__Signal_Signal_Impl_.gather(ret)
         else:
@@ -6587,17 +7643,17 @@ class tink_core__Signal_Signal_Impl_:
 
     @staticmethod
     def join(this1,other,gather = True):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:57
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:57
         if (gather is None):
             gather = True
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:60
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:60
         def _hx_local_0(cb):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:60
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:60
             return tink_core__Callback_LinkPair(this1.handle(cb),other.handle(cb))
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:58
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:58
         this2 = tink_core__Signal_SimpleSignal(_hx_local_0)
         ret = this2
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:63
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:63
         if gather:
             return tink_core__Signal_Signal_Impl_.gather(ret)
         else:
@@ -6605,88 +7661,88 @@ class tink_core__Signal_Signal_Impl_:
 
     @staticmethod
     def nextTime(this1,condition = None):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:71
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:71
         ret = tink_core_FutureTrigger()
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:72
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:72
         link = None
         immediate = False
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:75
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:75
         def _hx_local_0(v):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:75
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:75
             nonlocal immediate
             if ((condition is None) or condition(v)):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:76
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:76
                 ret.trigger(v)
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:77
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:77
                 if (link is None):
                     immediate = True
                 elif (link is not None):
                     link.dissolve()
         link = this1.handle(_hx_local_0)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:81
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:81
         if immediate:
             if (link is not None):
                 link.dissolve()
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:84
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:84
         return ret
 
     @staticmethod
     def next(this1,condition = None):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:91
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:91
         return tink_core__Signal_Signal_Impl_.nextTime(this1,condition)
 
     @staticmethod
     def noise(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:97
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:97
         def _hx_local_1():
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:97
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:97
             def _hx_local_0(_):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:97
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:97
                 return tink_core_Noise.Noise
             return tink_core__Signal_Signal_Impl_.map(this1,_hx_local_0)
         return _hx_local_1()
 
     @staticmethod
     def gather(this1):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:105
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:105
         ret = tink_core__Signal_Signal_Impl_.trigger()
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:106
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:106
         def _hx_local_0(x):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:106
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:106
             tink_core__Callback_CallbackList_Impl_.invoke(ret.handlers,x)
         this1.handle(_hx_local_0)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:107
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:107
         return ret
 
     @staticmethod
     def generate(generator):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:111
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:111
         ret = tink_core__Signal_Signal_Impl_.trigger()
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:112
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:112
         generator(ret.trigger)
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:113
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:113
         return ret
 
     @staticmethod
     def trigger():
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:120
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:120
         return tink_core_SignalTrigger()
 
     @staticmethod
     def ofClassical(add,remove,gather = True):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:126
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:126
         if (gather is None):
             gather = True
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:127
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:127
         def _hx_local_2(cb):
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:128
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:128
             def _hx_local_0(a):
-                # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:128
+                # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:128
                 tink_core__Callback_Callback_Impl_.invoke(cb,a)
             f = _hx_local_0
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:129
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:129
             add(f)
-            # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:130
+            # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:130
             this2 = None
             f1 = remove
             a1 = f
@@ -6696,7 +7752,7 @@ class tink_core__Signal_Signal_Impl_:
             return this2
         this1 = tink_core__Signal_SimpleSignal(_hx_local_2)
         ret = this1
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:134
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:134
         if gather:
             return tink_core__Signal_Signal_Impl_.gather(ret)
         else:
@@ -6718,11 +7774,11 @@ class tink_core__Signal_SimpleSignal:
     _hx_methods = ["handle"]
 
     def __init__(self,f):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:141
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:141
         self.f = f
 
     def handle(self,cb):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:142
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:142
         return self.f(cb)
 
 tink_core__Signal_SimpleSignal._hx_class = tink_core__Signal_SimpleSignal
@@ -6735,28 +7791,28 @@ class tink_core_SignalTrigger:
     _hx_methods = ["trigger", "getLength", "handle", "clear", "asSignal"]
 
     def __init__(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:146
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:146
         this1 = []
         self.handlers = this1
 
     def trigger(self,event):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:153
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:153
         tink_core__Callback_CallbackList_Impl_.invoke(self.handlers,event)
 
     def getLength(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:159
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:159
         return len(self.handlers)
 
     def handle(self,cb):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:162
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:162
         return tink_core__Callback_CallbackList_Impl_.add(self.handlers,cb)
 
     def clear(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:168
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:168
         tink_core__Callback_CallbackList_Impl_.clear(self.handlers)
 
     def asSignal(self):
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Signal.hx:171
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Signal.hx:171
         return self
 
 tink_core_SignalTrigger._hx_class = tink_core_SignalTrigger
@@ -6811,7 +7867,10 @@ def _hx_init_a8_GlobalScheduler_scheduler():
         return s
     return _hx_local_0()
 a8_GlobalScheduler.scheduler = _hx_init_a8_GlobalScheduler_scheduler()
+a8_Logger.traceEnabled = False
 a8_PlatformOps.instance = a8_PythonPlatform()
+a8_UserConfig.sbtCredentials = a8_PathOps.readProperties(a8_PathOps.entry(a8_PathOps.userHome(),".sbt/credentials"))
+a8_UserConfig.versions = a8_PathOps.readProperties(a8_PathOps.entry(a8_PathOps.userHome(),".a8/versions/config.properties"))
 haxe_EntryPoint.sleepLock = haxe__EntryPoint_Lock()
 haxe_EntryPoint.mutex = haxe__EntryPoint_Mutex()
 haxe_EntryPoint.pending = list()
@@ -6828,9 +7887,9 @@ tink_core__Future_Future_Impl_.NEVER = tink_core__Future_NeverFuture.inst
 tink_core__Promise_Promise_Impl_.NULL = tink_core__Future_SyncFuture(tink_core__Lazy_LazyConst(tink_core_Outcome.Success(None)))
 tink_core__Promise_Promise_Impl_.NOISE = tink_core__Future_SyncFuture(tink_core__Lazy_LazyConst(tink_core_Outcome.Success(tink_core_Noise.Noise)))
 def _hx_init_tink_core__Promise_Promise_Impl__NEVER():
-    # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:9
+    # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:9
     def _hx_local_0():
-        # /usr/local/lib/haxe/lib/tink_core/1,16,1/src/tink/core/Promise.hx:9
+        # /usr/local/lib/haxe/lib/tink_core/1,17,0/src/tink/core/Promise.hx:9
         ret = tink_core__Future_Future_Impl_.NEVER.map(tink_core_Outcome.Success)
         return ret.gather()
     return _hx_local_0()
