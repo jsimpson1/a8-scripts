@@ -19,5 +19,7 @@
 
   { "source": "a8-codegen", "link": "bin/a8-codegen" },
 
+  { "source": "a8-zoo", "link": "bin/a8-zoo" },
+
  ]
 
